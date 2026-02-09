@@ -93,7 +93,7 @@ export function PricingSection() {
         <div className="mt-16 bg-gray-900 text-white rounded-2xl p-6 md:p-8 text-center">
           <p className="text-lg font-medium">Want to DIY? Use MCP Factory directly.</p>
           <p className="text-gray-400 mt-2 text-sm">
-            Open-source, BYOK (Bring Your Own Keys), free, no guarantees.
+            Open-source, BYOK (Bring Your Own Keys), no markups, no guarantees.
           </p>
           <a
             href="https://mcpfactory.org"

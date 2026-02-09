@@ -22,7 +22,7 @@ const faqItems = [
   },
   {
     q: "What is MCP Factory?",
-    a: "MCP Factory is the open-source engine that powers GrowthService. You can use it directly (BYOK (Bring Your Own Keys), free, no guarantees) or use GrowthService for the managed, guaranteed experience.",
+    a: "MCP Factory is the open-source engine that powers GrowthService. You can use it directly (BYOK (Bring Your Own Keys), no markups, no guarantees) or use GrowthService for the managed, guaranteed experience.",
   },
   {
     q: "How fast do I get results?",

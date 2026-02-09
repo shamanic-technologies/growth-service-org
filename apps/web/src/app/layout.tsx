@@ -39,6 +39,10 @@ export const metadata: Metadata = {
     description:
       "Guaranteed growth results via API & MCP. Transparent pricing, 90-day money-back guarantee.",
   },
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
   robots: {
     index: true,
     follow: true,

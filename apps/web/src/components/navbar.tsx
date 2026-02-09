@@ -8,7 +8,12 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
-        <a href="/" className="text-lg font-semibold tracking-tight">
+        <a href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+          <svg width="24" height="24" viewBox="0 0 32 32" className="shrink-0">
+            <rect width="32" height="32" rx="8" fill="#111" />
+            <path d="M8 22L14 14L19 17L24 8" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d="M20 8H24V12" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          </svg>
           GrowthService
         </a>
 
