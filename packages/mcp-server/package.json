@@ -1,0 +1,22 @@
+{
+  "name": "@growthservice/mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for GrowthService - order growth services from any AI assistant",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "growthservice-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts --format esm --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm turbo build --filter=@growthservice/web",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs"
+}
