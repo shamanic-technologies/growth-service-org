@@ -14,7 +14,7 @@ const faqItems = [
   },
   {
     q: "What counts as a 'lead'?",
-    a: "A lead is someone who opened your website, viewed your press kit, or replied with questions/interest. We track engagement through our outreach platform.",
+    a: "A lead is someone who opened your website, viewed your press kit, or replied with interest. You receive their name and email address so you can follow up and close them.",
   },
   {
     q: "Can I use this programmatically?",
