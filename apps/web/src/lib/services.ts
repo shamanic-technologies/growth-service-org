@@ -27,7 +27,7 @@ export interface Service {
 export const SERVICES: Service[] = [
   {
     id: "sales_leads",
-    name: "Sales Leads",
+    name: "Warm Sales Leads",
     description:
       "Prospects who opened your website or replied with interest to your outreach.",
     unit: "leads",
@@ -61,7 +61,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "sales_positive_replies",
-    name: "Sales Positive Replies",
+    name: "Hot Sales Leads",
     description:
       "Qualified prospects who expressed genuine interest in your product or service.",
     unit: "replies",
@@ -95,7 +95,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "pr_journalist_leads",
-    name: "PR Journalist Leads",
+    name: "Warm Journalist Leads",
     description:
       "Journalists who opened your website, press kit, or replied with interest.",
     unit: "leads",

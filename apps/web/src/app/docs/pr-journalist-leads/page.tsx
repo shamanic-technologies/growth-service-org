@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "PR Journalist Leads - GrowthService Docs",
+  title: "Warm Journalist Leads - GrowthService Docs",
   description:
     "Get journalists who opened your website, press kit, or replied with interest. Starting at $20 for 1 lead guaranteed.",
 };
@@ -10,7 +10,7 @@ export default function PrJournalistLeadsPage() {
   return (
     <div>
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-        PR Journalist Leads
+        Warm Journalist Leads
       </h1>
       <p className="mt-4 text-gray-500">
         Journalists who opened your website, press kit, or replied with interest

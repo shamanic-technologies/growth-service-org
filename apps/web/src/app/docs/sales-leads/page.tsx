@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sales Leads - GrowthService Docs",
+  title: "Warm Sales Leads - GrowthService Docs",
   description:
-    "Get prospects who opened your website or replied to your cold email outreach. Starting at $8 for 1 lead guaranteed.",
+    "Get prospects who opened your website or replied to your outreach. Starting at $8 for 1 lead guaranteed.",
 };
 
 export default function SalesLeadsPage() {
   return (
     <div>
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-        Sales Leads
+        Warm Sales Leads
       </h1>
       <p className="mt-4 text-gray-500">
         Prospects who opened your website or replied with interest to your
@@ -21,7 +21,7 @@ export default function SalesLeadsPage() {
         <h2 className="text-xl font-semibold">How it works</h2>
         <ol className="mt-4 space-y-2 text-sm text-gray-600 list-decimal list-inside">
           <li>You provide your brand URL and a short description of your ideal customer.</li>
-          <li>Our AI identifies prospects, crafts personalized cold emails, and sends them.</li>
+          <li>Our AI identifies prospects, crafts personalized outreach, and contacts them.</li>
           <li>We track opens, clicks, and replies — each counts as a lead.</li>
           <li>You get a guaranteed number of engaged prospects.</li>
         </ol>

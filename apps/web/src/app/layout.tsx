@@ -10,10 +10,10 @@ export const metadata: Metadata = {
     template: "%s | GrowthService",
   },
   description:
-    "Guaranteed growth results via API & MCP. Cold emails, PR outreach, and more. Transparent pricing, money-back guarantee. Powered by MCP Factory.",
+    "Guaranteed growth results via API & MCP. Sales outreach, PR outreach, and more. Transparent pricing, money-back guarantee. Powered by MCP Factory.",
   keywords: [
     "growth agency",
-    "cold email",
+    "sales outreach",
     "PR outreach",
     "lead generation",
     "API",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "GrowthService",
     title: "GrowthService - AI-Native Growth Agency",
     description:
-      "Guaranteed growth results via API & MCP. Cold emails, PR outreach, sales leads. Transparent pricing, 90-day money-back guarantee.",
+      "Guaranteed growth results via API & MCP. Sales outreach, PR outreach, lead generation. Transparent pricing, 90-day money-back guarantee.",
   },
   twitter: {
     card: "summary_large_image",
@@ -58,7 +58,7 @@ const organizationJsonLd = {
   name: "GrowthService",
   url: "https://growthservice.org",
   description:
-    "AI-native growth agency with guaranteed results. Cold emails, PR outreach, sales leads via API and MCP.",
+    "AI-native growth agency with guaranteed results. Sales outreach, PR outreach, lead generation via API and MCP.",
   foundingDate: "2026",
   sameAs: ["https://mcpfactory.org", "https://growthagency.dev"],
 };
@@ -92,7 +92,7 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "PR Journalist Leads",
+          name: "Warm Journalist Leads",
           description: "Journalists who engaged with your press outreach",
         },
         priceSpecification: {
@@ -121,8 +121,8 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Sales Leads",
-          description: "Prospects who engaged with your cold email outreach",
+          name: "Warm Sales Leads",
+          description: "Prospects who engaged with your sales outreach",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
@@ -135,7 +135,7 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Sales Positive Replies",
+          name: "Hot Sales Leads",
           description:
             "Qualified prospects who expressed genuine interest in your product",
         },

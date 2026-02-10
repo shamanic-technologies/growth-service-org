@@ -106,21 +106,19 @@ export function PricingSection({
           </div>
         </div>
 
-        {/* DIY callout */}
-        <div className="mt-16 bg-gray-900 text-white rounded-2xl p-6 md:p-8 text-center">
-          <p className="text-lg font-medium">Want to DIY? Use MCP Factory directly.</p>
-          <p className="text-gray-400 mt-2 text-sm">
-            Open-source, BYOK (Bring Your Own Keys), no markups, no guarantees.
-          </p>
+        {/* Built on open-source */}
+        <p className="mt-12 text-center text-sm text-gray-400">
+          Built on open-source{" "}
           <a
             href="https://mcpfactory.org"
+            className="hover:underline hover:text-gray-600 transition"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block mt-4 border border-white/20 text-white px-6 py-2 rounded-full text-sm hover:bg-white/10 transition"
           >
-            Visit MCP Factory
+            MCP Factory
           </a>
-        </div>
+          . All services include money-back guarantee.
+        </p>
       </div>
 
       {selected && (

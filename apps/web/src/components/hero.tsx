@@ -9,7 +9,7 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-          Cold emails, PR outreach, and more. Pay per result. Use via API, MCP,
+          Sales outreach, PR outreach, and more. Pay per result. Use via API, MCP,
           or just click Buy. Money-back guarantee on everything.
         </p>
 

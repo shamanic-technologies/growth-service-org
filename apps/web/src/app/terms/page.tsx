@@ -45,7 +45,7 @@ export default function TermsPage() {
               </h2>
               <div className="mt-3 space-y-3">
                 <div>
-                  <strong className="text-gray-900">PR Journalist Leads:</strong>{" "}
+                  <strong className="text-gray-900">Warm Journalist Leads:</strong>{" "}
                   A journalist who opened your website, viewed your press kit, or
                   replied with interest to your press outreach.
                 </div>
@@ -55,12 +55,12 @@ export default function TermsPage() {
                   writing about or publishing content related to your brand.
                 </div>
                 <div>
-                  <strong className="text-gray-900">Sales Leads:</strong>{" "}
+                  <strong className="text-gray-900">Warm Sales Leads:</strong>{" "}
                   A prospect who opened your website or replied with interest to
-                  your cold email outreach.
+                  your outreach.
                 </div>
                 <div>
-                  <strong className="text-gray-900">Sales Positive Replies:</strong>{" "}
+                  <strong className="text-gray-900">Hot Sales Leads:</strong>{" "}
                   A prospect who expressed genuine interest in your product or
                   service, such as requesting a demo, asking questions, or
                   indicating a desire to learn more.
@@ -78,7 +78,7 @@ export default function TermsPage() {
                 tier size and service type.
               </p>
               <p className="mt-2">
-                Sales leads and sales positive replies are typically delivered
+                Warm and hot sales leads are typically delivered
                 faster than PR services. Journalists take more time to respond
                 than sales prospects.
               </p>
@@ -134,18 +134,18 @@ export default function TermsPage() {
                   </thead>
                   <tbody className="text-gray-600">
                     <tr className="border-b border-gray-100">
-                      <td className="py-2 pr-4">Sales Leads</td>
+                      <td className="py-2 pr-4">Warm Sales Leads</td>
                       <td className="py-2 pr-4">Starter</td>
-                      <td className="py-2 pr-4">$40</td>
-                      <td className="py-2 pr-4">$10</td>
-                      <td className="py-2">$30</td>
+                      <td className="py-2 pr-4">$8</td>
+                      <td className="py-2 pr-4">$2</td>
+                      <td className="py-2">$6</td>
                     </tr>
                     <tr className="border-b border-gray-100">
-                      <td className="py-2 pr-4">Sales Leads</td>
+                      <td className="py-2 pr-4">Warm Sales Leads</td>
                       <td className="py-2 pr-4">Growth</td>
-                      <td className="py-2 pr-4">$400</td>
-                      <td className="py-2 pr-4">$100</td>
-                      <td className="py-2">$300</td>
+                      <td className="py-2 pr-4">$80</td>
+                      <td className="py-2 pr-4">$20</td>
+                      <td className="py-2">$60</td>
                     </tr>
                     <tr className="border-b border-gray-100">
                       <td className="py-2 pr-4">PR Publication Proposals</td>
@@ -155,11 +155,11 @@ export default function TermsPage() {
                       <td className="py-2">$450</td>
                     </tr>
                     <tr>
-                      <td className="py-2 pr-4">PR Journalist Leads</td>
+                      <td className="py-2 pr-4">Warm Journalist Leads</td>
                       <td className="py-2 pr-4">Scale</td>
-                      <td className="py-2 pr-4">$4,000</td>
-                      <td className="py-2 pr-4">$1,000</td>
-                      <td className="py-2">$3,000</td>
+                      <td className="py-2 pr-4">$2,000</td>
+                      <td className="py-2 pr-4">$500</td>
+                      <td className="py-2">$1,500</td>
                     </tr>
                   </tbody>
                 </table>

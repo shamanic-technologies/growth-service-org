@@ -121,7 +121,7 @@ export default function ApiReferencePage() {
   "services": [
     {
       "id": "sales_leads",
-      "name": "Sales Leads",
+      "name": "Warm Sales Leads",
       "description": "Prospects who opened your website or replied...",
       "unit": "leads",
       "tiers": [
