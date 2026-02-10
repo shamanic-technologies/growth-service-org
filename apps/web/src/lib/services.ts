@@ -29,7 +29,7 @@ export const SERVICES: Service[] = [
     id: "sales_engaged_leads",
     name: "Engaged Sales Leads",
     description:
-      "Prospects who visited your website after being reached out.",
+      "Prospects who visited your website after we reached out about your brand.",
     unit: "leads",
     unitPriceCents: 800,
     tiers: [
@@ -97,7 +97,7 @@ export const SERVICES: Service[] = [
     id: "pr_engaged_leads",
     name: "Engaged Journalist Leads",
     description:
-      "Journalists who clicked your website, viewed your press kit, or opened your pitch.",
+      "Journalists who clicked your website or viewed your press kit.",
     unit: "leads",
     unitPriceCents: 2000,
     tiers: [

@@ -95,7 +95,7 @@ const serviceJsonLd = {
         itemOffered: {
           "@type": "Service",
           name: "Engaged Journalist Leads",
-          description: "Journalists who clicked your website, viewed your press kit, or opened your pitch",
+          description: "Journalists who clicked your website or viewed your press kit",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
@@ -124,7 +124,7 @@ const serviceJsonLd = {
         itemOffered: {
           "@type": "Service",
           name: "Engaged Sales Leads",
-          description: "Prospects who visited your website after being reached out",
+          description: "Prospects who visited your website after we reached out about your brand",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
