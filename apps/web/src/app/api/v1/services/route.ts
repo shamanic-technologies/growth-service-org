@@ -7,6 +7,7 @@ export async function GET() {
     name: s.name,
     description: s.description,
     unit: s.unit,
+    unit_price_cents: s.unitPriceCents,
     tiers: s.tiers.map((t) => ({
       tier: t.tier,
       label: t.label,

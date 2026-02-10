@@ -49,7 +49,7 @@ export default function QuickstartPage() {
   -H "Content-Type: application/json" \\
   -d '{
     "service": "sales_leads",
-    "tier": "growth",
+    "quantity": 10,
     "brand_url": "https://yourbrand.com",
     "description": "B2B SaaS targeting CTOs"
   }'

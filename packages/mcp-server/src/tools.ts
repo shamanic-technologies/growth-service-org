@@ -53,7 +53,7 @@ export const tools = [
           "sales_positive_replies",
         ])
         .describe("Service ID"),
-      tier: z.enum(["starter", "growth", "scale"]).describe("Pricing tier"),
+      quantity: z.number().int().positive().describe("Number of results to deliver"),
       brand_url: z
         .string()
         .url()
@@ -66,7 +66,7 @@ export const tools = [
     }),
     handler: async (input: {
       service: string;
-      tier: string;
+      quantity: number;
       brand_url?: string;
       description?: string;
     }) => {
@@ -82,7 +82,7 @@ export const tools = [
     }),
     handler: async (input: { order_id: string }) => {
       const order = await getOrderStatus(input.order_id);
-      return `Order ${order.id}:\n- Service: ${order.service}\n- Tier: ${order.tier}\n- Status: ${order.status}\n- Amount: $${(order.amount_cents / 100).toFixed(2)}\n- Created: ${order.created_at}${order.paid_at ? `\n- Paid: ${order.paid_at}` : ""}${order.completed_at ? `\n- Completed: ${order.completed_at}` : ""}`;
+      return `Order ${order.id}:\n- Service: ${order.service}\n- Quantity: ${order.quantity}\n- Status: ${order.status}\n- Amount: $${(order.amount_cents / 100).toFixed(2)}\n- Created: ${order.created_at}${order.paid_at ? `\n- Paid: ${order.paid_at}` : ""}${order.completed_at ? `\n- Completed: ${order.completed_at}` : ""}`;
     },
   },
   {
@@ -94,7 +94,7 @@ export const tools = [
       if (!result.orders.length) return "No orders found.";
       let output = "Your orders:\n\n";
       for (const order of result.orders) {
-        output += `- ${order.id}: ${order.service} (${order.tier}) — ${order.status} — $${(order.amount_cents / 100).toFixed(2)}\n`;
+        output += `- ${order.id}: ${order.service} (qty: ${order.quantity}) — ${order.status} — $${(order.amount_cents / 100).toFixed(2)}\n`;
       }
       return output;
     },

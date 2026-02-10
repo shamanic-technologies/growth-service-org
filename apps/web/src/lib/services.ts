@@ -1,8 +1,8 @@
 export type ServiceId =
-  | "pr_journalist_leads"
-  | "pr_publication_proposals"
   | "sales_leads"
-  | "sales_positive_replies";
+  | "sales_positive_replies"
+  | "pr_journalist_leads"
+  | "pr_publication_proposals";
 
 export type TierId = "starter" | "growth" | "scale";
 
@@ -20,104 +20,40 @@ export interface Service {
   name: string;
   description: string;
   unit: string;
+  unitPriceCents: number;
   tiers: ServiceTier[];
 }
 
 export const SERVICES: Service[] = [
-  {
-    id: "pr_journalist_leads",
-    name: "PR Journalist Leads",
-    description:
-      "Journalists who opened your website, press kit, or replied with interest.",
-    unit: "leads",
-    tiers: [
-      {
-        tier: "starter",
-        label: "Starter",
-        quantity: 2,
-        quantityLabel: "2 leads guaranteed",
-        priceCents: 4000,
-        priceLabel: "$40",
-      },
-      {
-        tier: "growth",
-        label: "Growth",
-        quantity: 20,
-        quantityLabel: "20 leads guaranteed",
-        priceCents: 40000,
-        priceLabel: "$400",
-      },
-      {
-        tier: "scale",
-        label: "Scale",
-        quantity: 200,
-        quantityLabel: "200 leads guaranteed",
-        priceCents: 400000,
-        priceLabel: "$4,000",
-      },
-    ],
-  },
-  {
-    id: "pr_publication_proposals",
-    name: "PR Publication Proposals",
-    description:
-      "Positive replies from journalists ready to publish about your brand.",
-    unit: "proposals",
-    tiers: [
-      {
-        tier: "starter",
-        label: "Starter",
-        quantity: 1,
-        quantityLabel: "1 proposal guaranteed",
-        priceCents: 60000,
-        priceLabel: "$600",
-      },
-      {
-        tier: "growth",
-        label: "Growth",
-        quantity: 5,
-        quantityLabel: "5 proposals guaranteed",
-        priceCents: 300000,
-        priceLabel: "$3,000",
-      },
-      {
-        tier: "scale",
-        label: "Scale",
-        quantity: 10,
-        quantityLabel: "10 proposals guaranteed",
-        priceCents: 600000,
-        priceLabel: "$6,000",
-      },
-    ],
-  },
   {
     id: "sales_leads",
     name: "Sales Leads",
     description:
       "Prospects who opened your website or replied with interest to your outreach.",
     unit: "leads",
+    unitPriceCents: 4000,
     tiers: [
       {
         tier: "starter",
         label: "Starter",
-        quantity: 5,
-        quantityLabel: "5 leads guaranteed",
+        quantity: 1,
+        quantityLabel: "1 lead guaranteed",
         priceCents: 4000,
         priceLabel: "$40",
       },
       {
         tier: "growth",
         label: "Growth",
-        quantity: 50,
-        quantityLabel: "50 leads guaranteed",
+        quantity: 10,
+        quantityLabel: "10 leads guaranteed",
         priceCents: 40000,
         priceLabel: "$400",
       },
       {
         tier: "scale",
         label: "Scale",
-        quantity: 500,
-        quantityLabel: "500 leads guaranteed",
+        quantity: 100,
+        quantityLabel: "100 leads guaranteed",
         priceCents: 400000,
         priceLabel: "$4,000",
       },
@@ -129,6 +65,7 @@ export const SERVICES: Service[] = [
     description:
       "Qualified prospects who expressed genuine interest in your product or service.",
     unit: "replies",
+    unitPriceCents: 3200,
     tiers: [
       {
         tier: "starter",
@@ -156,6 +93,74 @@ export const SERVICES: Service[] = [
       },
     ],
   },
+  {
+    id: "pr_journalist_leads",
+    name: "PR Journalist Leads",
+    description:
+      "Journalists who opened your website, press kit, or replied with interest.",
+    unit: "leads",
+    unitPriceCents: 4000,
+    tiers: [
+      {
+        tier: "starter",
+        label: "Starter",
+        quantity: 1,
+        quantityLabel: "1 lead guaranteed",
+        priceCents: 4000,
+        priceLabel: "$40",
+      },
+      {
+        tier: "growth",
+        label: "Growth",
+        quantity: 10,
+        quantityLabel: "10 leads guaranteed",
+        priceCents: 40000,
+        priceLabel: "$400",
+      },
+      {
+        tier: "scale",
+        label: "Scale",
+        quantity: 100,
+        quantityLabel: "100 leads guaranteed",
+        priceCents: 400000,
+        priceLabel: "$4,000",
+      },
+    ],
+  },
+  {
+    id: "pr_publication_proposals",
+    name: "PR Publication Proposals",
+    description:
+      "Positive replies from journalists ready to publish about your brand.",
+    unit: "proposals",
+    unitPriceCents: 60000,
+    tiers: [
+      {
+        tier: "starter",
+        label: "Starter",
+        quantity: 1,
+        quantityLabel: "1 proposal guaranteed",
+        priceCents: 60000,
+        priceLabel: "$600",
+      },
+      {
+        tier: "growth",
+        label: "Growth",
+        quantity: 5,
+        quantityLabel: "5 proposals guaranteed",
+        priceCents: 300000,
+        priceLabel: "$3,000",
+      },
+      {
+        tier: "scale",
+        label: "Scale",
+        quantity: 10,
+        quantityLabel: "10 proposals guaranteed",
+        priceCents: 600000,
+        priceLabel: "$6,000",
+      },
+    ],
+  },
 ];
 
 export type Frequency = "one_off" | "weekly" | "monthly" | "quarterly";
@@ -165,8 +170,6 @@ export interface FrequencyOption {
   label: string;
 }
 
-// PR services: slower cadence (journalists need time)
-// Sales services: can run faster
 export const SERVICE_FREQUENCIES: Record<ServiceId, FrequencyOption[]> = {
   pr_journalist_leads: [
     { value: "one_off", label: "One-off" },
@@ -182,13 +185,11 @@ export const SERVICE_FREQUENCIES: Record<ServiceId, FrequencyOption[]> = {
     { value: "one_off", label: "One-off" },
     { value: "weekly", label: "Weekly" },
     { value: "monthly", label: "Monthly" },
-    { value: "quarterly", label: "Quarterly" },
   ],
   sales_positive_replies: [
     { value: "one_off", label: "One-off" },
     { value: "weekly", label: "Weekly" },
     { value: "monthly", label: "Monthly" },
-    { value: "quarterly", label: "Quarterly" },
   ],
 };
 

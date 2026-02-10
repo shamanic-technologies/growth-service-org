@@ -43,7 +43,20 @@ const faqJsonLd = {
   })),
 };
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ order_complete?: string; service?: string }>;
+}) {
+  const params = await searchParams;
+  const orderCompleteId = params.order_complete;
+  const orderCompleteService = params.service as
+    | "sales_leads"
+    | "sales_positive_replies"
+    | "pr_journalist_leads"
+    | "pr_publication_proposals"
+    | undefined;
+
   return (
     <>
       <script
@@ -68,16 +81,6 @@ export default function Home() {
             <div className="mt-12 grid md:grid-cols-2 gap-6 text-left">
               <div className="border border-gray-100 rounded-2xl p-6">
                 <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-                  PR
-                </div>
-                <h3 className="mt-2 text-lg font-semibold">Press Outreach</h3>
-                <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                  AI pitches journalists at scale. Get journalist leads
-                  (clicks/opens) or publication proposals (positive replies).
-                </p>
-              </div>
-              <div className="border border-gray-100 rounded-2xl p-6">
-                <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">
                   Sales
                 </div>
                 <h3 className="mt-2 text-lg font-semibold">Cold Email Outreach</h3>
@@ -86,11 +89,24 @@ export default function Home() {
                   (clicks/opens) or positive replies (qualified interest).
                 </p>
               </div>
+              <div className="border border-gray-100 rounded-2xl p-6">
+                <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+                  PR
+                </div>
+                <h3 className="mt-2 text-lg font-semibold">Press Outreach</h3>
+                <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+                  AI pitches journalists at scale. Get journalist leads
+                  (clicks/opens) or publication proposals (positive replies).
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        <PricingSection />
+        <PricingSection
+          orderCompleteId={orderCompleteId}
+          orderCompleteService={orderCompleteService}
+        />
 
         {/* How It Works */}
         <section id="how-it-works" className="py-16 md:py-20 px-4 md:px-6">
@@ -165,7 +181,7 @@ export default function Home() {
             {/* API preview */}
             <div className="mt-12 grid md:grid-cols-2 gap-6 text-left">
               <pre className="bg-gray-900 text-gray-100 rounded-2xl p-4 md:p-6 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre">
-<span className="text-gray-500"># Get your API key</span>{"\n"}curl -X POST growthservice.org/api/v1/auth/request-key \{"\n"}{"  "}{`-d '{"email":"you@co.com"}'`}{"\n"}{"\n"}<span className="text-gray-500"># Create an order</span>{"\n"}curl -X POST growthservice.org/api/v1/orders \{"\n"}{"  "}-H &quot;Authorization: Bearer gsk_...&quot; \{"\n"}{"  "}{`-d '{"service":"sales_leads","tier":"growth"}'`}
+<span className="text-gray-500"># Get your API key</span>{"\n"}curl -X POST growthservice.org/api/v1/auth/request-key \{"\n"}{"  "}{`-d '{"email":"you@co.com"}'`}{"\n"}{"\n"}<span className="text-gray-500"># Create an order</span>{"\n"}curl -X POST growthservice.org/api/v1/orders \{"\n"}{"  "}-H &quot;Authorization: Bearer gsk_...&quot; \{"\n"}{"  "}{`-d '{"service":"sales_leads","quantity":10}'`}
               </pre>
               <pre className="bg-gray-900 text-gray-100 rounded-2xl p-4 md:p-6 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre">
 <span className="text-gray-500">// Claude Desktop config</span>{"\n"}{`{

@@ -7,9 +7,9 @@ import {
   markWebhookProcessed,
   getApiKeyByEmail,
 } from "@/lib/db";
-import { sendOrderConfirmationEmail, sendApiKeyEmail } from "@/lib/email";
-import { getService, getServiceTier } from "@/lib/services";
-import type { ServiceId, TierId } from "@/lib/services";
+import { getService } from "@/lib/services";
+import { sendApiKeyEmail } from "@/lib/email";
+import type { ServiceId } from "@/lib/services";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -61,34 +61,20 @@ export async function POST(req: NextRequest) {
           : undefined,
     });
 
-    // Send confirmation + API key emails
+    // Send API key email (order confirmation is sent after step 3 brand details)
     try {
-      const serviceId = order.service as ServiceId;
-      const tierId = order.tier as TierId;
-      const service = getService(serviceId);
-      const tier = getServiceTier(serviceId, tierId);
-
-      if (service && tier) {
-        await sendOrderConfirmationEmail(
-          order.email,
-          order.id,
-          service.name,
-          tier.label,
-          tier.priceLabel
-        );
-      }
-
-      // Send API key if this is a new user from landing page
       const apiKeyRecord = await getApiKeyByEmail(order.email);
       if (apiKeyRecord) {
         await sendApiKeyEmail(order.email, apiKeyRecord.id);
       }
     } catch (e) {
-      console.error("Failed to send emails:", e);
+      console.error("Failed to send API key email:", e);
     }
 
-    // TODO: Dispatch fulfillment to MCP Factory
-    console.log(`Order ${orderId} paid. Ready for fulfillment.`);
+    const serviceData = getService(order.service as ServiceId);
+    console.log(
+      `Order ${orderId} paid: ${serviceData?.name || order.service} x${order.quantity}. Ready for fulfillment.`
+    );
   }
 
   return NextResponse.json({ received: true });
