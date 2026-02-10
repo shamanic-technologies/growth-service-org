@@ -34,10 +34,10 @@ export const tools = [
     inputSchema: z.object({
       service: z
         .enum([
-          "pr_journalist_leads",
-          "pr_publication_proposals",
-          "sales_leads",
-          "sales_positive_replies",
+          "pr_engaged_leads",
+          "pr_hot_leads",
+          "sales_engaged_leads",
+          "sales_warm_leads",
         ])
         .describe("Service ID"),
       budget_usd: z

@@ -1,8 +1,8 @@
 export type ServiceId =
-  | "sales_leads"
-  | "sales_positive_replies"
-  | "pr_journalist_leads"
-  | "pr_publication_proposals";
+  | "sales_engaged_leads"
+  | "sales_warm_leads"
+  | "pr_engaged_leads"
+  | "pr_hot_leads";
 
 export type TierId = "starter" | "growth" | "scale";
 
@@ -26,10 +26,10 @@ export interface Service {
 
 export const SERVICES: Service[] = [
   {
-    id: "sales_leads",
-    name: "Warm Sales Leads",
+    id: "sales_engaged_leads",
+    name: "Engaged Sales Leads",
     description:
-      "Prospects who opened your website or replied with interest to your outreach.",
+      "Prospects who visited your website after receiving outreach on your behalf.",
     unit: "leads",
     unitPriceCents: 800,
     tiers: [
@@ -37,7 +37,7 @@ export const SERVICES: Service[] = [
         tier: "starter",
         label: "Starter",
         quantity: 1,
-        quantityLabel: "1 warm lead guaranteed",
+        quantityLabel: "1 engaged lead guaranteed",
         priceCents: 800,
         priceLabel: "$8",
       },
@@ -45,7 +45,7 @@ export const SERVICES: Service[] = [
         tier: "growth",
         label: "Growth",
         quantity: 10,
-        quantityLabel: "10 warm leads guaranteed",
+        quantityLabel: "10 engaged leads guaranteed",
         priceCents: 8000,
         priceLabel: "$80",
       },
@@ -53,17 +53,17 @@ export const SERVICES: Service[] = [
         tier: "scale",
         label: "Scale",
         quantity: 100,
-        quantityLabel: "100 warm leads guaranteed",
+        quantityLabel: "100 engaged leads guaranteed",
         priceCents: 80000,
         priceLabel: "$800",
       },
     ],
   },
   {
-    id: "sales_positive_replies",
-    name: "Hot Sales Leads",
+    id: "sales_warm_leads",
+    name: "Warm Sales Leads",
     description:
-      "Qualified prospects who expressed genuine interest in your product or service.",
+      "Prospects who replied with genuine interest — asking questions, requesting a demo, or wanting to learn more.",
     unit: "replies",
     unitPriceCents: 3200,
     tiers: [
@@ -71,7 +71,7 @@ export const SERVICES: Service[] = [
         tier: "starter",
         label: "Starter",
         quantity: 1,
-        quantityLabel: "1 hot lead guaranteed",
+        quantityLabel: "1 warm lead guaranteed",
         priceCents: 3200,
         priceLabel: "$32",
       },
@@ -79,7 +79,7 @@ export const SERVICES: Service[] = [
         tier: "growth",
         label: "Growth",
         quantity: 10,
-        quantityLabel: "10 hot leads guaranteed",
+        quantityLabel: "10 warm leads guaranteed",
         priceCents: 32000,
         priceLabel: "$320",
       },
@@ -87,17 +87,17 @@ export const SERVICES: Service[] = [
         tier: "scale",
         label: "Scale",
         quantity: 100,
-        quantityLabel: "100 hot leads guaranteed",
+        quantityLabel: "100 warm leads guaranteed",
         priceCents: 320000,
         priceLabel: "$3,200",
       },
     ],
   },
   {
-    id: "pr_journalist_leads",
-    name: "Warm Journalist Leads",
+    id: "pr_engaged_leads",
+    name: "Engaged Journalist Leads",
     description:
-      "Journalists who opened your website, press kit, or replied with interest.",
+      "Journalists who clicked your website, viewed your press kit, or opened your pitch.",
     unit: "leads",
     unitPriceCents: 2000,
     tiers: [
@@ -105,7 +105,7 @@ export const SERVICES: Service[] = [
         tier: "starter",
         label: "Starter",
         quantity: 1,
-        quantityLabel: "1 warm lead guaranteed",
+        quantityLabel: "1 engaged lead guaranteed",
         priceCents: 2000,
         priceLabel: "$20",
       },
@@ -113,7 +113,7 @@ export const SERVICES: Service[] = [
         tier: "growth",
         label: "Growth",
         quantity: 10,
-        quantityLabel: "10 warm leads guaranteed",
+        quantityLabel: "10 engaged leads guaranteed",
         priceCents: 20000,
         priceLabel: "$200",
       },
@@ -121,25 +121,25 @@ export const SERVICES: Service[] = [
         tier: "scale",
         label: "Scale",
         quantity: 100,
-        quantityLabel: "100 warm leads guaranteed",
+        quantityLabel: "100 engaged leads guaranteed",
         priceCents: 200000,
         priceLabel: "$2,000",
       },
     ],
   },
   {
-    id: "pr_publication_proposals",
-    name: "PR Publication Proposals",
+    id: "pr_hot_leads",
+    name: "Hot Journalist Leads",
     description:
-      "Positive replies from journalists ready to publish about your brand.",
-    unit: "proposals",
+      "Journalists who expressed interest in an interview, written contribution (op-ed, Q&A), podcast invitation, or quoted your brand.",
+    unit: "leads",
     unitPriceCents: 60000,
     tiers: [
       {
         tier: "starter",
         label: "Starter",
         quantity: 1,
-        quantityLabel: "1 proposal guaranteed",
+        quantityLabel: "1 hot lead guaranteed",
         priceCents: 60000,
         priceLabel: "$600",
       },
@@ -147,7 +147,7 @@ export const SERVICES: Service[] = [
         tier: "growth",
         label: "Growth",
         quantity: 5,
-        quantityLabel: "5 proposals guaranteed",
+        quantityLabel: "5 hot leads guaranteed",
         priceCents: 300000,
         priceLabel: "$3,000",
       },
@@ -155,7 +155,7 @@ export const SERVICES: Service[] = [
         tier: "scale",
         label: "Scale",
         quantity: 10,
-        quantityLabel: "10 proposals guaranteed",
+        quantityLabel: "10 hot leads guaranteed",
         priceCents: 600000,
         priceLabel: "$6,000",
       },
@@ -171,22 +171,22 @@ export interface FrequencyOption {
 }
 
 export const SERVICE_FREQUENCIES: Record<ServiceId, FrequencyOption[]> = {
-  pr_journalist_leads: [
+  pr_engaged_leads: [
     { value: "one_off", label: "One-off" },
     { value: "monthly", label: "Monthly" },
     { value: "quarterly", label: "Quarterly" },
   ],
-  pr_publication_proposals: [
+  pr_hot_leads: [
     { value: "one_off", label: "One-off" },
     { value: "monthly", label: "Monthly" },
     { value: "quarterly", label: "Quarterly" },
   ],
-  sales_leads: [
+  sales_engaged_leads: [
     { value: "one_off", label: "One-off" },
     { value: "weekly", label: "Weekly" },
     { value: "monthly", label: "Monthly" },
   ],
-  sales_positive_replies: [
+  sales_warm_leads: [
     { value: "one_off", label: "One-off" },
     { value: "weekly", label: "Weekly" },
     { value: "monthly", label: "Monthly" },

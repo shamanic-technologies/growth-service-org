@@ -1,37 +1,38 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "PR Publication Proposals - GrowthService Docs",
+  title: "Warm Sales Leads - GrowthService Docs",
   description:
-    "Get positive replies from journalists ready to publish about your brand. Starting at $600 for 1 proposal guaranteed.",
+    "Get prospects who replied with genuine interest in your product. Starting at $32 for 1 warm lead guaranteed.",
 };
 
-export default function PrPublicationProposalsPage() {
+export default function SalesWarmLeadsPage() {
   return (
     <div>
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-        PR Publication Proposals
+        Warm Sales Leads
       </h1>
       <p className="mt-4 text-gray-500">
-        Positive replies from journalists ready to publish about your brand.
+        Prospects who replied with genuine interest — asking questions,
+        requesting a demo, or wanting to learn more.
       </p>
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold">How it works</h2>
         <ol className="mt-4 space-y-2 text-sm text-gray-600 list-decimal list-inside">
-          <li>You provide your brand URL and a short description.</li>
-          <li>Our AI identifies and pitches relevant journalists at scale.</li>
-          <li>We follow up and nurture conversations until we get positive replies.</li>
-          <li>A proposal = a journalist who confirmed interest in writing about you.</li>
+          <li>You provide your brand URL and a description of what you sell.</li>
+          <li>Our AI identifies ideal prospects and sends personalized outreach.</li>
+          <li>We follow up and nurture conversations.</li>
+          <li>A warm lead = a prospect who replied with interest, asked for a demo, or wants to learn more.</li>
         </ol>
       </section>
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Pricing</h2>
         <div className="mt-4 grid sm:grid-cols-3 gap-4">
-          <TierCard tier="Starter" quantity="1 proposal guaranteed" price="$600" />
-          <TierCard tier="Growth" quantity="5 proposals guaranteed" price="$3,000" />
-          <TierCard tier="Scale" quantity="10 proposals guaranteed" price="$6,000" />
+          <TierCard tier="Starter" quantity="1 warm lead guaranteed" price="$32" />
+          <TierCard tier="Growth" quantity="10 warm leads guaranteed" price="$320" />
+          <TierCard tier="Scale" quantity="100 warm leads guaranteed" price="$3,200" />
         </div>
       </section>
 
@@ -39,13 +40,13 @@ export default function PrPublicationProposalsPage() {
         <h2 className="text-xl font-semibold">API usage</h2>
         <pre className="mt-3 bg-gray-50 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
 {`curl -X POST https://growthservice.org/api/v1/orders \\
-  -H "Authorization: Bearer gsk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "service": "pr_publication_proposals",
-    "quantity": 1,
+    "email": "you@company.com",
+    "service": "sales_warm_leads",
+    "budget_usd": 320,
     "brand_url": "https://yourbrand.com",
-    "description": "Looking for tech press coverage"
+    "description": "AI tool for sales teams, targeting VP Sales"
   }'`}
         </pre>
       </section>
@@ -53,7 +54,7 @@ export default function PrPublicationProposalsPage() {
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Guarantee</h2>
         <p className="mt-3 text-sm text-gray-600">
-          If we don&apos;t deliver the guaranteed number of publication proposals
+          If we don&apos;t deliver the guaranteed number of warm leads
           within 90 days, you get a full refund minus a 25% deductible (which
           covers outreach infrastructure costs).{" "}
           <a href="/terms" className="underline hover:text-gray-900">

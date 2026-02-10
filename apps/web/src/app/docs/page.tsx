@@ -38,24 +38,24 @@ export default function DocsPage() {
           description="Use GrowthService from Claude, ChatGPT, or any MCP-compatible assistant."
         />
         <CardLink
-          href="/docs/pr-journalist-leads"
-          title="Warm Journalist Leads"
-          description="Get journalists who clicked or replied to your press outreach."
+          href="/docs/pr-engaged-leads"
+          title="Engaged Journalist Leads"
+          description="Journalists who clicked your website, viewed your press kit, or opened your pitch."
         />
         <CardLink
-          href="/docs/pr-publication-proposals"
-          title="PR Publication Proposals"
-          description="Get positive replies from journalists ready to publish."
+          href="/docs/pr-hot-leads"
+          title="Hot Journalist Leads"
+          description="Journalists who expressed interest in an interview, written contribution, podcast invitation, or quoted your brand."
         />
         <CardLink
-          href="/docs/sales-leads"
+          href="/docs/sales-engaged-leads"
+          title="Engaged Sales Leads"
+          description="Prospects who visited your website after receiving outreach on your behalf."
+        />
+        <CardLink
+          href="/docs/sales-warm-leads"
           title="Warm Sales Leads"
-          description="Prospects who opened your website or replied to outreach."
-        />
-        <CardLink
-          href="/docs/sales-positive-replies"
-          title="Hot Sales Leads"
-          description="Qualified prospects who expressed genuine interest."
+          description="Prospects who replied with genuine interest — asking questions, requesting a demo, or wanting to learn more."
         />
       </div>
     </div>
