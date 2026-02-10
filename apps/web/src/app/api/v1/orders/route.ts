@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticateRequest } from "@/lib/auth";
-import { getOrCreateApiKey, createOrder, getOrdersByApiKey } from "@/lib/db";
+import { createOrder, getOrdersByEmail } from "@/lib/db";
 import { getService } from "@/lib/services";
 import { createCheckoutSession } from "@/lib/stripe";
-import { sendAdminNotificationEmail } from "@/lib/email";
+import { sendAdminNotificationEmail, sendWelcomeEmail } from "@/lib/email";
 import type { ServiceId } from "@/lib/services";
 
 const VALID_SERVICES: ServiceId[] = [
@@ -16,7 +15,15 @@ const VALID_SERVICES: ServiceId[] = [
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { service, quantity, frequency, email } = body;
+    const { service, budget_usd, frequency, email, brand_url, description } =
+      body;
+
+    if (!email || typeof email !== "string") {
+      return NextResponse.json(
+        { error: "Email is required" },
+        { status: 400 }
+      );
+    }
 
     // Validate service
     if (!service || !VALID_SERVICES.includes(service)) {
@@ -36,40 +43,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate quantity
-    const qty = Number(quantity);
-    if (!qty || qty < 1 || !Number.isInteger(qty)) {
+    // Validate budget and compute quantity
+    const budgetUsd = Number(budget_usd);
+    if (!budgetUsd || budgetUsd < 1) {
       return NextResponse.json(
-        { error: "Quantity must be a positive integer" },
+        { error: "budget_usd must be a positive number" },
         { status: 400 }
       );
     }
 
-    const amountCents = serviceData.unitPriceCents * qty;
-
-    // Auth: either Bearer token or email in body (for landing page flow)
-    let apiKeyRecord = await authenticateRequest(req);
-    if (!apiKeyRecord && email) {
-      apiKeyRecord = await getOrCreateApiKey(email);
-    }
-    if (!apiKeyRecord) {
+    const unitPriceDollars = serviceData.unitPriceCents / 100;
+    const qty = Math.floor(budgetUsd / unitPriceDollars);
+    if (qty < 1) {
       return NextResponse.json(
-        {
-          error:
-            "Authentication required. Provide Authorization: Bearer <key> header or email in body.",
-        },
-        { status: 401 }
+        { error: `Minimum budget is $${unitPriceDollars}` },
+        { status: 400 }
       );
     }
 
+    const amountCents = qty * serviceData.unitPriceCents;
+
     // Create order
     const order = await createOrder({
-      apiKeyId: apiKeyRecord.id,
-      email: apiKeyRecord.email,
+      email,
       service,
       quantity: qty,
       frequency: frequency || "one_off",
       amountCents,
+      budgetUsd,
+      brandUrl: brand_url,
+      description,
     });
 
     // Create Stripe checkout session
@@ -78,26 +81,38 @@ export async function POST(req: NextRequest) {
       serviceId: service,
       serviceName: serviceData.name,
       quantity: qty,
-      customerEmail: apiKeyRecord.email,
+      customerEmail: email,
       amountCents,
+      frequency: frequency || "one_off",
+      budgetUsd,
+      brandUrl: brand_url,
+      description,
     });
 
-    // Send admin notification before responding (must await on Vercel serverless)
+    // Send welcome email (fire-and-forget, ok if duplicate)
+    sendWelcomeEmail(email).catch((err) =>
+      console.error("Welcome email error:", err)
+    );
+
+    // Send admin notification (must await on Vercel serverless)
     const amountLabel = `$${(amountCents / 100).toLocaleString()}`;
     await sendAdminNotificationEmail(
       order.id,
-      apiKeyRecord.email,
+      email,
       serviceData.name,
       qty,
-      amountLabel
+      amountLabel,
+      frequency || "one_off",
+      budgetUsd
     ).catch((err) => console.error("Admin notification error:", err));
 
     return NextResponse.json({
       order_id: order.id,
       checkout_url: checkoutUrl,
-      amount_cents: amountCents,
-      service,
       quantity: qty,
+      amount_cents: amountCents,
+      budget_usd: budgetUsd,
+      service,
     });
   } catch (e) {
     console.error("Order creation error:", e);
@@ -109,12 +124,15 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  const apiKeyRecord = await authenticateRequest(req);
-  if (!apiKeyRecord) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const email = req.nextUrl.searchParams.get("email");
+  if (!email) {
+    return NextResponse.json(
+      { error: "email query param required" },
+      { status: 400 }
+    );
   }
 
-  const orders = await getOrdersByApiKey(apiKeyRecord.id);
+  const orders = await getOrdersByEmail(email);
   return NextResponse.json({
     orders: orders.map((o) => ({
       id: o.id,
@@ -123,6 +141,7 @@ export async function GET(req: NextRequest) {
       frequency: o.frequency,
       status: o.status,
       amount_cents: o.amountCents,
+      budget_usd: o.budgetUsd,
       brand_url: o.brandUrl,
       created_at: o.createdAt,
       paid_at: o.paidAt,

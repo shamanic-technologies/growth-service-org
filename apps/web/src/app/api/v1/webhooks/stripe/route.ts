@@ -5,10 +5,9 @@ import {
   updateOrderStatus,
   isWebhookProcessed,
   markWebhookProcessed,
-  getApiKeyByEmail,
 } from "@/lib/db";
 import { getService } from "@/lib/services";
-import { sendApiKeyEmail } from "@/lib/email";
+import { sendOrderConfirmationEmail } from "@/lib/email";
 import type { ServiceId } from "@/lib/services";
 
 export async function POST(req: NextRequest) {
@@ -61,14 +60,23 @@ export async function POST(req: NextRequest) {
           : undefined,
     });
 
-    // Send API key email (order confirmation is sent after step 3 brand details)
-    try {
-      const apiKeyRecord = await getApiKeyByEmail(order.email);
-      if (apiKeyRecord) {
-        await sendApiKeyEmail(order.email, apiKeyRecord.id);
-      }
-    } catch (e) {
-      console.error("Failed to send API key email:", e);
+    // If order has brand info (API/MCP flow), send confirmation email now
+    if (order.brandUrl) {
+      const serviceData = getService(order.service as ServiceId);
+      const amountLabel = `$${(order.amountCents / 100).toLocaleString()}`;
+      await sendOrderConfirmationEmail({
+        email: order.email,
+        orderId: order.id,
+        serviceName: serviceData?.name || order.service,
+        quantity: order.quantity,
+        amount: amountLabel,
+        frequency: order.frequency,
+        budgetUsd: order.budgetUsd,
+        brandUrl: order.brandUrl,
+        description: order.description,
+      }).catch((err) =>
+        console.error("Order confirmation email error:", err)
+      );
     }
 
     const serviceData = getService(order.service as ServiceId);

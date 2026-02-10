@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticateRequest } from "@/lib/auth";
-import { getOrder, getOrCreateApiKey, updateOrderStatus } from "@/lib/db";
+import { getOrder, updateOrderStatus } from "@/lib/db";
 import { getService } from "@/lib/services";
 import { sendOrderConfirmationEmail } from "@/lib/email";
 import type { ServiceId } from "@/lib/services";
@@ -9,14 +8,17 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const apiKeyRecord = await authenticateRequest(req);
-  if (!apiKeyRecord) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const email = req.nextUrl.searchParams.get("email");
+  if (!email) {
+    return NextResponse.json(
+      { error: "email query param required" },
+      { status: 400 }
+    );
   }
 
   const { id } = await params;
   const order = await getOrder(id);
-  if (!order || order.apiKeyId !== apiKeyRecord.id) {
+  if (!order || order.email.toLowerCase() !== email.toLowerCase()) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
@@ -24,8 +26,10 @@ export async function GET(
     id: order.id,
     service: order.service,
     quantity: order.quantity,
+    frequency: order.frequency,
     status: order.status,
     amount_cents: order.amountCents,
+    budget_usd: order.budgetUsd,
     brand_url: order.brandUrl,
     description: order.description,
     fulfillment_meta: order.fulfillmentMeta,
@@ -44,10 +48,11 @@ export async function PATCH(
     const body = await req.json();
     const { brand_url, description, email } = body;
 
-    // Auth: Bearer token or email (for post-checkout flow)
-    let apiKeyRecord = await authenticateRequest(req);
-    if (!apiKeyRecord && email) {
-      apiKeyRecord = await getOrCreateApiKey(email);
+    if (!email) {
+      return NextResponse.json(
+        { error: "email is required" },
+        { status: 400 }
+      );
     }
 
     const order = await getOrder(id);
@@ -55,8 +60,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    // Allow update if authenticated or if email matches order
-    if (apiKeyRecord && order.apiKeyId !== apiKeyRecord.id) {
+    if (order.email.toLowerCase() !== email.toLowerCase()) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
@@ -65,16 +69,20 @@ export async function PATCH(
       description: description || order.description,
     });
 
-    // Send order confirmation email with BCC to admin
+    // Send order confirmation email with all info
     const serviceData = getService(order.service as ServiceId);
     const amountLabel = `$${(order.amountCents / 100).toLocaleString()}`;
-    sendOrderConfirmationEmail(
-      order.email,
-      order.id,
-      serviceData?.name || order.service,
-      order.quantity,
-      amountLabel
-    ).catch((err) => console.error("Order confirmation email error:", err));
+    await sendOrderConfirmationEmail({
+      email: order.email,
+      orderId: order.id,
+      serviceName: serviceData?.name || order.service,
+      quantity: order.quantity,
+      amount: amountLabel,
+      frequency: order.frequency,
+      budgetUsd: order.budgetUsd,
+      brandUrl: brand_url || order.brandUrl,
+      description: description || order.description,
+    }).catch((err) => console.error("Order confirmation email error:", err));
 
     return NextResponse.json({ ok: true });
   } catch (e) {
