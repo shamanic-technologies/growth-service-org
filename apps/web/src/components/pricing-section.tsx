@@ -1,15 +1,32 @@
 "use client";
 
 import { SERVICES } from "@/lib/services";
-import type { ServiceId, TierId } from "@/lib/services";
+import type { ServiceId } from "@/lib/services";
 import { useState } from "react";
 import { CheckoutModal } from "./checkout-modal";
 
-export function PricingSection() {
-  const [selectedService, setSelectedService] = useState<{
+export function PricingSection({
+  orderCompleteId,
+  orderCompleteService,
+}: {
+  orderCompleteId?: string;
+  orderCompleteService?: ServiceId;
+}) {
+  const [selected, setSelected] = useState<{
     serviceId: ServiceId;
-    tierId: TierId;
-  } | null>(null);
+    quantity: number;
+    orderId?: string;
+    initialStep?: "email" | "configure" | "details" | "done";
+  } | null>(
+    orderCompleteId && orderCompleteService
+      ? {
+          serviceId: orderCompleteService,
+          quantity: 1,
+          orderId: orderCompleteId,
+          initialStep: "details",
+        }
+      : null
+  );
 
   return (
     <section id="pricing" className="py-16 md:py-20 px-4 md:px-6 bg-gray-50/50">
@@ -34,32 +51,6 @@ export function PricingSection() {
         </div>
 
         <div className="space-y-16">
-          {/* PR Services */}
-          <div>
-            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-6">
-              PR Services
-            </h3>
-            <div className="grid md:grid-cols-2 gap-8">
-              {SERVICES.filter((s) => s.id.startsWith("pr_")).map((service) => (
-                <ServiceCard
-                  key={service.id}
-                  name={service.name}
-                  description={service.description}
-                  tiers={service.tiers.map((t) => ({
-                    label: t.label,
-                    quantity: t.quantityLabel,
-                    price: t.priceLabel,
-                    onClick: () =>
-                      setSelectedService({
-                        serviceId: service.id,
-                        tierId: t.tier,
-                      }),
-                  }))}
-                />
-              ))}
-            </div>
-          </div>
-
           {/* Sales Services */}
           <div>
             <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-6">
@@ -77,14 +68,40 @@ export function PricingSection() {
                       quantity: t.quantityLabel,
                       price: t.priceLabel,
                       onClick: () =>
-                        setSelectedService({
+                        setSelected({
                           serviceId: service.id,
-                          tierId: t.tier,
+                          quantity: t.quantity,
                         }),
                     }))}
                   />
                 )
               )}
+            </div>
+          </div>
+
+          {/* PR Services */}
+          <div>
+            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-6">
+              PR Services
+            </h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              {SERVICES.filter((s) => s.id.startsWith("pr_")).map((service) => (
+                <ServiceCard
+                  key={service.id}
+                  name={service.name}
+                  description={service.description}
+                  tiers={service.tiers.map((t) => ({
+                    label: t.label,
+                    quantity: t.quantityLabel,
+                    price: t.priceLabel,
+                    onClick: () =>
+                      setSelected({
+                        serviceId: service.id,
+                        quantity: t.quantity,
+                      }),
+                  }))}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -106,11 +123,13 @@ export function PricingSection() {
         </div>
       </div>
 
-      {selectedService && (
+      {selected && (
         <CheckoutModal
-          serviceId={selectedService.serviceId}
-          tierId={selectedService.tierId}
-          onClose={() => setSelectedService(null)}
+          serviceId={selected.serviceId}
+          initialQuantity={selected.quantity}
+          orderId={selected.orderId}
+          initialStep={selected.initialStep}
+          onClose={() => setSelected(null)}
         />
       )}
     </section>

@@ -43,7 +43,7 @@ export default function PrPublicationProposalsPage() {
   -H "Content-Type: application/json" \\
   -d '{
     "service": "pr_publication_proposals",
-    "tier": "starter",
+    "quantity": 1,
     "brand_url": "https://yourbrand.com",
     "description": "Looking for tech press coverage"
   }'`}

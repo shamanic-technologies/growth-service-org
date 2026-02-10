@@ -14,7 +14,7 @@ interface OrderRecord {
   apiKeyId: string;
   email: string;
   service: string;
-  tier: string;
+  quantity: number;
   frequency: string;
   status: string;
   amountCents: number;
@@ -73,7 +73,7 @@ export async function createOrder(params: {
   apiKeyId: string;
   email: string;
   service: string;
-  tier: string;
+  quantity: number;
   frequency: string;
   amountCents: number;
   brandUrl?: string;
@@ -85,7 +85,7 @@ export async function createOrder(params: {
     apiKeyId: params.apiKeyId,
     email: params.email,
     service: params.service,
-    tier: params.tier,
+    quantity: params.quantity,
     frequency: params.frequency,
     status: "pending_payment",
     amountCents: params.amountCents,

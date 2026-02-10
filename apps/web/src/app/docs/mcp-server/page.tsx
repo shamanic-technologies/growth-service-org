@@ -56,7 +56,7 @@ export default function McpServerPage() {
           <ToolDoc
             name="growthservice_create_order"
             description="Create an order and get a payment link."
-            params={`{ "service": "sales_leads", "tier": "growth", "brand_url": "...", "description": "..." }`}
+            params={`{ "service": "sales_leads", "quantity": 10, "brand_url": "...", "description": "..." }`}
           />
           <ToolDoc
             name="growthservice_order_status"

@@ -176,10 +176,10 @@ export default function ApiReferencePage() {
                 "Service ID: pr_journalist_leads, pr_publication_proposals, sales_leads, or sales_positive_replies",
             },
             {
-              name: "tier",
-              type: "string",
+              name: "quantity",
+              type: "number",
               required: true,
-              description: "Tier: starter, growth, or scale",
+              description: "Number of results to deliver",
             },
             {
               name: "brand_url",
@@ -204,7 +204,7 @@ export default function ApiReferencePage() {
   -H "Content-Type: application/json" \\
   -d '{
     "service": "sales_leads",
-    "tier": "growth",
+    "quantity": 10,
     "brand_url": "https://yourbrand.com",
     "description": "B2B SaaS targeting CTOs at mid-market companies"
   }'`}
@@ -255,7 +255,7 @@ export default function ApiReferencePage() {
 {`{
   "id": "ord_a1b2c3d4e5",
   "service": "sales_leads",
-  "tier": "growth",
+  "quantity": 10,
   "status": "paid",
   "amount_cents": 40000,
   "brand_url": "https://yourbrand.com",
@@ -339,7 +339,7 @@ export default function ApiReferencePage() {
     {
       "id": "ord_a1b2c3d4e5",
       "service": "sales_leads",
-      "tier": "growth",
+      "quantity": 10,
       "status": "paid",
       "amount_cents": 40000,
       "created_at": "2026-02-09T12:00:00.000Z"

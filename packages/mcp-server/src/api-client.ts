@@ -37,7 +37,7 @@ export async function listServices() {
 
 export async function createOrder(params: {
   service: string;
-  tier: string;
+  quantity: number;
   brand_url?: string;
   description?: string;
 }) {

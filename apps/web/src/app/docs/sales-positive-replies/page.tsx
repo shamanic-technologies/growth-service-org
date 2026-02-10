@@ -44,7 +44,7 @@ export default function SalesPositiveRepliesPage() {
   -H "Content-Type: application/json" \\
   -d '{
     "service": "sales_positive_replies",
-    "tier": "growth",
+    "quantity": 10,
     "brand_url": "https://yourbrand.com",
     "description": "AI tool for sales teams, targeting VP Sales"
   }'`}

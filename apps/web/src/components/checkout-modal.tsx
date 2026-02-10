@@ -1,41 +1,80 @@
 "use client";
 
-import { useState } from "react";
-import type { ServiceId, TierId, Frequency } from "@/lib/services";
-import { getService, getServiceTier, getServiceFrequencies } from "@/lib/services";
+import { useState, useEffect } from "react";
+import type { ServiceId, Frequency } from "@/lib/services";
+import { getService, getServiceFrequencies } from "@/lib/services";
 
-type Step = "email" | "details";
+type Step = "email" | "configure" | "details" | "done";
 
 export function CheckoutModal({
   serviceId,
-  tierId,
+  initialQuantity,
+  orderId: initialOrderId,
+  initialStep,
   onClose,
 }: {
   serviceId: ServiceId;
-  tierId: TierId;
+  initialQuantity: number;
+  orderId?: string;
+  initialStep?: Step;
   onClose: () => void;
 }) {
-  const [step, setStep] = useState<Step>("email");
+  const [step, setStep] = useState<Step>(initialStep || "email");
   const [email, setEmail] = useState("");
   const [frequency, setFrequency] = useState<Frequency>("one_off");
+  const [quantity, setQuantity] = useState(initialQuantity);
   const [brandUrl, setBrandUrl] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [orderId, setOrderId] = useState(initialOrderId || "");
 
   const service = getService(serviceId);
-  const tier = getServiceTier(serviceId, tierId);
   const frequencies = getServiceFrequencies(serviceId);
 
-  if (!service || !tier) return null;
+  // Pre-fill email from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("gs_email");
+    if (saved) setEmail(saved);
+  }, []);
+
+  if (!service) return null;
+
+  const unitPrice = service.unitPriceCents;
+  const totalCents = unitPrice * quantity;
+  const totalLabel = `$${(totalCents / 100).toLocaleString()}`;
+  const unitLabel = `$${(unitPrice / 100).toLocaleString()}`;
+
+  const frequencyLabel =
+    frequency === "one_off"
+      ? ""
+      : ` / ${frequencies.find((f) => f.value === frequency)?.label.toLowerCase()}`;
+
+  const steps: Step[] = ["email", "configure", "details"];
+  const stepIndex = steps.indexOf(step);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    setStep("details");
+    setLoading(true);
+    setError("");
+    localStorage.setItem("gs_email", email);
+
+    try {
+      await fetch("/api/v1/welcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+    } catch {
+      // Non-blocking — continue even if welcome email fails
+    }
+
+    setLoading(false);
+    setStep("configure");
   };
 
-  const handleDetailsSubmit = async (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -46,10 +85,8 @@ export function CheckoutModal({
         body: JSON.stringify({
           email,
           service: serviceId,
-          tier: tierId,
+          quantity,
           frequency,
-          brand_url: brandUrl || undefined,
-          description: description || undefined,
         }),
       });
       const data = await res.json();
@@ -58,6 +95,7 @@ export function CheckoutModal({
         setLoading(false);
         return;
       }
+      setOrderId(data.order_id);
       window.location.href = data.checkout_url;
     } catch {
       setError("Network error. Please try again.");
@@ -65,10 +103,33 @@ export function CheckoutModal({
     }
   };
 
-  const frequencyLabel =
-    frequency === "one_off"
-      ? ""
-      : ` / ${frequencies.find((f) => f.value === frequency)?.label.toLowerCase()}`;
+  const handleDetailsSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const savedEmail = localStorage.getItem("gs_email") || email;
+      const res = await fetch(`/api/v1/orders/${orderId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: savedEmail,
+          brand_url: brandUrl || undefined,
+          description: description || undefined,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Something went wrong");
+        setLoading(false);
+        return;
+      }
+      setStep("done");
+    } catch {
+      setError("Network error. Please try again.");
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -81,10 +142,12 @@ export function CheckoutModal({
         <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <div>
             <div className="text-sm text-gray-500">{service.name}</div>
-            <div className="font-semibold">
-              {tier.quantityLabel} &middot; {tier.priceLabel}
-              {frequencyLabel}
-            </div>
+            {step !== "email" && (
+              <div className="font-semibold">
+                {quantity} {service.unit} &middot; {totalLabel}
+                {frequencyLabel}
+              </div>
+            )}
           </div>
           <button
             onClick={onClose}
@@ -105,13 +168,11 @@ export function CheckoutModal({
 
         {/* Steps indicator */}
         <div className="px-6 pt-4 flex gap-2">
-          {(["email", "details"] as const).map((s, i) => (
+          {steps.map((s, i) => (
             <div
               key={s}
               className={`h-1 flex-1 rounded-full ${
-                i <= ["email", "details"].indexOf(step)
-                  ? "bg-gray-900"
-                  : "bg-gray-100"
+                i <= stepIndex ? "bg-gray-900" : "bg-gray-100"
               }`}
             />
           ))}
@@ -124,6 +185,7 @@ export function CheckoutModal({
             </div>
           )}
 
+          {/* Step 1: Email */}
           {step === "email" && (
             <form onSubmit={handleEmailSubmit}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -139,20 +201,22 @@ export function CheckoutModal({
               />
               <button
                 type="submit"
-                className="w-full mt-4 bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition"
+                disabled={loading}
+                className="w-full mt-4 bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50"
               >
-                Continue
+                {loading ? "Sending..." : "Continue"}
               </button>
             </form>
           )}
 
-          {step === "details" && (
-            <form onSubmit={handleDetailsSubmit}>
+          {/* Step 2: Frequency + Volume */}
+          {step === "configure" && (
+            <form onSubmit={handleCheckout}>
               {/* Frequency */}
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Frequency
               </label>
-              <div className="grid grid-cols-2 gap-2 mb-4">
+              <div className="grid grid-cols-3 gap-2 mb-5">
                 {frequencies.map((f) => (
                   <button
                     key={f.value}
@@ -169,10 +233,68 @@ export function CheckoutModal({
                 ))}
               </div>
 
-              {/* Brand details */}
-              <p className="text-sm text-gray-500 mb-4">
-                Tell us about your brand (optional — you can add this later).
+              {/* Volume */}
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Volume
+              </label>
+              <div className="flex items-center gap-3 mb-2">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-lg text-lg hover:border-gray-300 transition"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  min={1}
+                  value={quantity}
+                  onChange={(e) => {
+                    const v = parseInt(e.target.value, 10);
+                    if (v >= 1) setQuantity(v);
+                  }}
+                  className="w-20 text-center border border-gray-200 rounded-lg py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-lg text-lg hover:border-gray-300 transition"
+                >
+                  +
+                </button>
+                <span className="text-sm text-gray-500">
+                  {service.unit}
+                </span>
+              </div>
+              <p className="text-xs text-gray-400 mb-5">
+                {unitLabel} per {service.unit.replace(/s$/, "")}
               </p>
+
+              {/* Total */}
+              <div className="flex items-center justify-between py-3 border-t border-gray-100 mb-4">
+                <span className="text-sm text-gray-500">Total</span>
+                <span className="text-lg font-semibold">
+                  {totalLabel}
+                  {frequencyLabel}
+                </span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50"
+              >
+                {loading ? "Redirecting to payment..." : `Checkout ${totalLabel}`}
+              </button>
+            </form>
+          )}
+
+          {/* Step 3: Brand Details (post-checkout) */}
+          {step === "details" && (
+            <form onSubmit={handleDetailsSubmit}>
+              <div className="mb-4 p-3 bg-green-50 text-green-700 text-sm rounded-lg">
+                Payment confirmed! Tell us about your brand to get started.
+              </div>
 
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Brand URL
@@ -186,7 +308,7 @@ export function CheckoutModal({
               />
 
               <label className="block text-sm font-medium text-gray-700 mt-4 mb-2">
-                What do you want? (1-2 lines)
+                Campaign brief (1-2 lines)
               </label>
               <textarea
                 value={description}
@@ -201,11 +323,47 @@ export function CheckoutModal({
                 disabled={loading}
                 className="w-full mt-4 bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50"
               >
-                {loading
-                  ? "Redirecting to payment..."
-                  : `Pay ${tier.priceLabel}${frequencyLabel}`}
+                {loading ? "Saving..." : "Complete Order"}
+              </button>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full mt-2 text-gray-500 text-sm hover:text-gray-700 transition"
+              >
+                Skip for now
               </button>
             </form>
+          )}
+
+          {/* Done */}
+          {step === "done" && (
+            <div className="text-center py-4">
+              <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#22c55e"
+                  strokeWidth="2"
+                >
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="mt-4 font-semibold text-lg">
+                You&apos;re all set!
+              </h3>
+              <p className="mt-2 text-sm text-gray-500">
+                Your campaign starts instantly. Check your email for confirmation and API key.
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-6 bg-gray-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition"
+              >
+                Done
+              </button>
+            </div>
           )}
         </div>
       </div>
