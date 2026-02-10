@@ -1,6 +1,6 @@
-const MCPFACTORY_EMAIL_URL =
-  process.env.MCPFACTORY_EMAIL_URL || "https://email-sending.mcpfactory.org";
-const MCPFACTORY_EMAIL_API_KEY = process.env.MCPFACTORY_EMAIL_API_KEY || "";
+const EMAIL_SENDING_URL =
+  process.env.EMAIL_SENDING_SERVICE_URL || "https://email-sending.mcpfactory.org";
+const EMAIL_SENDING_API_KEY = process.env.EMAIL_SENDING_SERVICE_API_KEY || "";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@growthservice.org";
 
 export async function sendTransactionalEmail({
@@ -18,11 +18,11 @@ export async function sendTransactionalEmail({
   tag?: string;
   bcc?: string;
 }) {
-  const res = await fetch(`${MCPFACTORY_EMAIL_URL}/send`, {
+  const res = await fetch(`${EMAIL_SENDING_URL}/send`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": MCPFACTORY_EMAIL_API_KEY,
+      "X-API-Key": EMAIL_SENDING_API_KEY,
     },
     body: JSON.stringify({
       type: "transactional",
