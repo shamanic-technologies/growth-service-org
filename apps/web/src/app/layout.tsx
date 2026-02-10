@@ -97,9 +97,9 @@ const serviceJsonLd = {
         },
         priceSpecification: {
           "@type": "PriceSpecification",
-          price: "40.00",
+          price: "20.00",
           priceCurrency: "USD",
-          description: "Starting at $40 for 2 leads",
+          description: "Starting at $20 for 1 lead",
         },
       },
       {
@@ -126,9 +126,9 @@ const serviceJsonLd = {
         },
         priceSpecification: {
           "@type": "PriceSpecification",
-          price: "40.00",
+          price: "8.00",
           priceCurrency: "USD",
-          description: "Starting at $40 for 5 leads",
+          description: "Starting at $8 for 1 lead",
         },
       },
       {
