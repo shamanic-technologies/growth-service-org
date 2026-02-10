@@ -40,7 +40,7 @@ export default function DocsPage() {
         <CardLink
           href="/docs/pr-engaged-leads"
           title="Engaged Journalist Leads"
-          description="Journalists who clicked your website, viewed your press kit, or opened your pitch."
+          description="Journalists who clicked your website or viewed your press kit."
         />
         <CardLink
           href="/docs/pr-hot-leads"
@@ -50,7 +50,7 @@ export default function DocsPage() {
         <CardLink
           href="/docs/sales-engaged-leads"
           title="Engaged Sales Leads"
-          description="Prospects who visited your website after being reached out."
+          description="Prospects who visited your website after we reached out about your brand."
         />
         <CardLink
           href="/docs/sales-warm-leads"

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Engaged Journalist Leads - GrowthService Docs",
   description:
-    "Get journalists who clicked your website, viewed your press kit, or opened your pitch. Starting at $20 for 1 lead guaranteed.",
+    "Get journalists who clicked your website or viewed your press kit. Starting at $20 for 1 lead guaranteed.",
 };
 
 export default function PrEngagedLeadsPage() {
@@ -13,8 +13,7 @@ export default function PrEngagedLeadsPage() {
         Engaged Journalist Leads
       </h1>
       <p className="mt-4 text-gray-500">
-        Journalists who clicked your website, viewed your press kit, or opened
-        your pitch.
+        Journalists who clicked your website or viewed your press kit.
       </p>
 
       <section className="mt-10">
