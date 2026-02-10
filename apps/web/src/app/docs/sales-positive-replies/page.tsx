@@ -30,9 +30,9 @@ export default function SalesPositiveRepliesPage() {
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Pricing</h2>
         <div className="mt-4 grid sm:grid-cols-3 gap-4">
-          <TierCard tier="Starter" quantity="1 reply guaranteed" price="$32" />
-          <TierCard tier="Growth" quantity="10 replies guaranteed" price="$320" />
-          <TierCard tier="Scale" quantity="100 replies guaranteed" price="$3,200" />
+          <TierCard tier="Starter" quantity="1 hot lead guaranteed" price="$32" />
+          <TierCard tier="Growth" quantity="10 hot leads guaranteed" price="$320" />
+          <TierCard tier="Scale" quantity="100 hot leads guaranteed" price="$3,200" />
         </div>
       </section>
 
