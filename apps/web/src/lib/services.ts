@@ -29,7 +29,7 @@ export const SERVICES: Service[] = [
     id: "sales_engaged_leads",
     name: "Engaged Sales Leads",
     description:
-      "Prospects who visited your website after receiving outreach on your behalf.",
+      "Prospects who visited your website after being reached out.",
     unit: "leads",
     unitPriceCents: 800,
     tiers: [

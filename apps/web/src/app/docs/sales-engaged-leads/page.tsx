@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Engaged Sales Leads - GrowthService Docs",
   description:
-    "Get prospects who visited your website after receiving outreach on your behalf. Starting at $8 for 1 lead guaranteed.",
+    "Get prospects who visited your website after being reached out. Starting at $8 for 1 lead guaranteed.",
 };
 
 export default function SalesEngagedLeadsPage() {
@@ -13,8 +13,7 @@ export default function SalesEngagedLeadsPage() {
         Engaged Sales Leads
       </h1>
       <p className="mt-4 text-gray-500">
-        Prospects who visited your website after receiving outreach on your
-        behalf.
+        Prospects who visited your website after being reached out.
       </p>
 
       <section className="mt-10">

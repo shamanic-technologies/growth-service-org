@@ -124,7 +124,7 @@ const serviceJsonLd = {
         itemOffered: {
           "@type": "Service",
           name: "Engaged Sales Leads",
-          description: "Prospects who visited your website after receiving outreach on your behalf",
+          description: "Prospects who visited your website after being reached out",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
