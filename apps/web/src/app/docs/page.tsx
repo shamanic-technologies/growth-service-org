@@ -50,7 +50,7 @@ export default function DocsPage() {
         <CardLink
           href="/docs/sales-engaged-leads"
           title="Engaged Sales Leads"
-          description="Prospects who visited your website after receiving outreach on your behalf."
+          description="Prospects who visited your website after being reached out."
         />
         <CardLink
           href="/docs/sales-warm-leads"
