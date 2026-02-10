@@ -30,9 +30,9 @@ export default function SalesLeadsPage() {
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Pricing</h2>
         <div className="mt-4 grid sm:grid-cols-3 gap-4">
-          <TierCard tier="Starter" quantity="1 lead guaranteed" price="$8" />
-          <TierCard tier="Growth" quantity="10 leads guaranteed" price="$80" />
-          <TierCard tier="Scale" quantity="100 leads guaranteed" price="$800" />
+          <TierCard tier="Starter" quantity="1 warm lead guaranteed" price="$8" />
+          <TierCard tier="Growth" quantity="10 warm leads guaranteed" price="$80" />
+          <TierCard tier="Scale" quantity="100 warm leads guaranteed" price="$800" />
         </div>
       </section>
 
