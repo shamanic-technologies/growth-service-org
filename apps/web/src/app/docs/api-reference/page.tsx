@@ -34,12 +34,6 @@ export default function ApiReferencePage() {
             </thead>
             <tbody className="text-gray-600">
               <tr className="border-b border-gray-100">
-                <td className="py-2 pr-4"><MethodBadge method="POST" /></td>
-                <td className="py-2 pr-4 font-mono text-xs">/auth/request-key</td>
-                <td className="py-2 pr-4">Request an API key</td>
-                <td className="py-2">No</td>
-              </tr>
-              <tr className="border-b border-gray-100">
                 <td className="py-2 pr-4"><MethodBadge method="GET" /></td>
                 <td className="py-2 pr-4 font-mono text-xs">/services</td>
                 <td className="py-2 pr-4">List all services with pricing</td>
@@ -49,57 +43,23 @@ export default function ApiReferencePage() {
                 <td className="py-2 pr-4"><MethodBadge method="POST" /></td>
                 <td className="py-2 pr-4 font-mono text-xs">/orders</td>
                 <td className="py-2 pr-4">Create an order</td>
-                <td className="py-2">Yes</td>
+                <td className="py-2">Email</td>
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-2 pr-4"><MethodBadge method="GET" /></td>
                 <td className="py-2 pr-4 font-mono text-xs">/orders/:id</td>
                 <td className="py-2 pr-4">Get order details</td>
-                <td className="py-2">Yes</td>
+                <td className="py-2">Email</td>
               </tr>
               <tr>
                 <td className="py-2 pr-4"><MethodBadge method="GET" /></td>
                 <td className="py-2 pr-4 font-mono text-xs">/orders</td>
                 <td className="py-2 pr-4">List all your orders</td>
-                <td className="py-2">Yes</td>
+                <td className="py-2">Email</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </section>
-
-      {/* POST /auth/request-key */}
-      <section className="mt-14" id="auth-request-key">
-        <EndpointHeader method="POST" path="/auth/request-key" auth={false} />
-        <p className="mt-3 text-sm text-gray-600">
-          Request an API key. The key is sent to your email — no signup
-          required. If you already have a key, the same key is re-sent.
-        </p>
-
-        <ParamsTable
-          params={[
-            {
-              name: "email",
-              type: "string",
-              required: true,
-              description: "Your email address",
-            },
-          ]}
-        />
-
-        <h4 className="mt-6 text-sm font-medium text-gray-900">Request</h4>
-        <pre className="mt-2 bg-gray-900 text-gray-100 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
-{`curl -X POST https://growthservice.org/api/v1/auth/request-key \\
-  -H "Content-Type: application/json" \\
-  -d '{"email": "you@company.com"}'`}
-        </pre>
-
-        <h4 className="mt-6 text-sm font-medium text-gray-900">Response</h4>
-        <pre className="mt-2 bg-gray-50 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
-{`{
-  "message": "API key sent to your email."
-}`}
-        </pre>
       </section>
 
       {/* GET /services */}
@@ -124,31 +84,15 @@ export default function ApiReferencePage() {
       "name": "Warm Sales Leads",
       "description": "Prospects who opened your website or replied...",
       "unit": "leads",
+      "unitPriceCents": 800,
       "tiers": [
         {
           "tier": "starter",
-          "label": "Starter",
-          "quantity": 5,
-          "quantityLabel": "5 leads guaranteed",
-          "priceCents": 4000,
-          "priceLabel": "$40"
+          "quantity": 1,
+          "priceCents": 800,
+          "priceLabel": "$8"
         },
-        {
-          "tier": "growth",
-          "label": "Growth",
-          "quantity": 50,
-          "quantityLabel": "50 leads guaranteed",
-          "priceCents": 40000,
-          "priceLabel": "$400"
-        },
-        {
-          "tier": "scale",
-          "label": "Scale",
-          "quantity": 500,
-          "quantityLabel": "500 leads guaranteed",
-          "priceCents": 400000,
-          "priceLabel": "$4,000"
-        }
+        ...
       ]
     },
     ...
@@ -161,25 +105,38 @@ export default function ApiReferencePage() {
       <section className="mt-14" id="create-order">
         <EndpointHeader method="POST" path="/orders" auth={true} />
         <p className="mt-3 text-sm text-gray-600">
-          Create an order for a service. Returns a Stripe checkout URL.
-          Redirect the user to pay — the order is fulfilled automatically after
-          payment.
+          Create an order for a service. Specify a budget — the server computes
+          the quantity. Returns a Stripe checkout URL.
         </p>
 
         <ParamsTable
           params={[
             {
+              name: "email",
+              type: "string",
+              required: true,
+              description: "Your email address",
+            },
+            {
               name: "service",
               type: "string",
               required: true,
               description:
-                "Service ID: pr_journalist_leads, pr_publication_proposals, sales_leads, or sales_positive_replies",
+                "Service ID: sales_leads, sales_positive_replies, pr_journalist_leads, or pr_publication_proposals",
             },
             {
-              name: "quantity",
+              name: "budget_usd",
               type: "number",
               required: true,
-              description: "Number of results to deliver",
+              description:
+                "Budget in USD. Quantity = floor(budget / unit_price). Charged amount may be less than budget.",
+            },
+            {
+              name: "frequency",
+              type: "string",
+              required: false,
+              description:
+                "Billing frequency: one_off (default), weekly, monthly, or quarterly",
             },
             {
               name: "brand_url",
@@ -200,11 +157,11 @@ export default function ApiReferencePage() {
         <h4 className="mt-6 text-sm font-medium text-gray-900">Request</h4>
         <pre className="mt-2 bg-gray-900 text-gray-100 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
 {`curl -X POST https://growthservice.org/api/v1/orders \\
-  -H "Authorization: Bearer gsk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
+    "email": "you@company.com",
     "service": "sales_leads",
-    "quantity": 10,
+    "budget_usd": 80,
     "brand_url": "https://yourbrand.com",
     "description": "B2B SaaS targeting CTOs at mid-market companies"
   }'`}
@@ -214,7 +171,11 @@ export default function ApiReferencePage() {
         <pre className="mt-2 bg-gray-50 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
 {`{
   "order_id": "ord_a1b2c3d4e5",
-  "checkout_url": "https://checkout.stripe.com/c/pay/cs_live_..."
+  "checkout_url": "https://checkout.stripe.com/c/pay/cs_live_...",
+  "quantity": 10,
+  "amount_cents": 8000,
+  "budget_usd": 80,
+  "service": "sales_leads"
 }`}
         </pre>
 
@@ -241,13 +202,18 @@ export default function ApiReferencePage() {
               required: true,
               description: "Order ID (in URL path)",
             },
+            {
+              name: "email",
+              type: "string",
+              required: true,
+              description: "Your email (query param)",
+            },
           ]}
         />
 
         <h4 className="mt-6 text-sm font-medium text-gray-900">Request</h4>
         <pre className="mt-2 bg-gray-900 text-gray-100 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
-{`curl https://growthservice.org/api/v1/orders/ord_a1b2c3d4e5 \\
-  -H "Authorization: Bearer gsk_YOUR_KEY"`}
+{`curl "https://growthservice.org/api/v1/orders/ord_a1b2c3d4e5?email=you@company.com"`}
         </pre>
 
         <h4 className="mt-6 text-sm font-medium text-gray-900">Response</h4>
@@ -256,8 +222,10 @@ export default function ApiReferencePage() {
   "id": "ord_a1b2c3d4e5",
   "service": "sales_leads",
   "quantity": 10,
+  "frequency": "one_off",
   "status": "paid",
-  "amount_cents": 40000,
+  "amount_cents": 8000,
+  "budget_usd": 80,
   "brand_url": "https://yourbrand.com",
   "description": "B2B SaaS targeting CTOs",
   "created_at": "2026-02-09T12:00:00.000Z",
@@ -280,7 +248,7 @@ export default function ApiReferencePage() {
               <tr className="border-b border-gray-100">
                 <td className="py-2 pr-4">
                   <code className="text-xs font-mono bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded">
-                    pending
+                    pending_payment
                   </code>
                 </td>
                 <td className="py-2">Order created, awaiting payment</td>
@@ -323,13 +291,23 @@ export default function ApiReferencePage() {
       <section className="mt-14" id="list-orders">
         <EndpointHeader method="GET" path="/orders" auth={true} />
         <p className="mt-3 text-sm text-gray-600">
-          List all orders associated with your API key.
+          List all orders associated with your email.
         </p>
+
+        <ParamsTable
+          params={[
+            {
+              name: "email",
+              type: "string",
+              required: true,
+              description: "Your email (query param)",
+            },
+          ]}
+        />
 
         <h4 className="mt-6 text-sm font-medium text-gray-900">Request</h4>
         <pre className="mt-2 bg-gray-900 text-gray-100 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
-{`curl https://growthservice.org/api/v1/orders \\
-  -H "Authorization: Bearer gsk_YOUR_KEY"`}
+{`curl "https://growthservice.org/api/v1/orders?email=you@company.com"`}
         </pre>
 
         <h4 className="mt-6 text-sm font-medium text-gray-900">Response</h4>
@@ -340,8 +318,10 @@ export default function ApiReferencePage() {
       "id": "ord_a1b2c3d4e5",
       "service": "sales_leads",
       "quantity": 10,
+      "frequency": "one_off",
       "status": "paid",
-      "amount_cents": 40000,
+      "amount_cents": 8000,
+      "budget_usd": 80,
       "created_at": "2026-02-09T12:00:00.000Z"
     }
   ]
@@ -361,7 +341,7 @@ export default function ApiReferencePage() {
         </p>
         <pre className="mt-4 bg-gray-50 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
 {`{
-  "error": "Missing required field: service"
+  "error": "budget_usd must be a positive number"
 }`}
         </pre>
 
@@ -379,8 +359,8 @@ export default function ApiReferencePage() {
                 <td className="py-2">Bad request — check params</td>
               </tr>
               <tr className="border-b border-gray-100">
-                <td className="py-2 pr-4 font-mono text-xs">401</td>
-                <td className="py-2">Missing or invalid API key</td>
+                <td className="py-2 pr-4 font-mono text-xs">403</td>
+                <td className="py-2">Email doesn&apos;t match the order</td>
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-2 pr-4 font-mono text-xs">404</td>
@@ -419,7 +399,7 @@ function EndpointHeader({
       </code>
       {auth ? (
         <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full ml-auto shrink-0">
-          Auth required
+          Email required
         </span>
       ) : (
         <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full ml-auto shrink-0">

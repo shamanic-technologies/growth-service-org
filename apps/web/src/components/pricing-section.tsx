@@ -14,14 +14,14 @@ export function PricingSection({
 }) {
   const [selected, setSelected] = useState<{
     serviceId: ServiceId;
-    quantity: number;
+    budget: number;
     orderId?: string;
     initialStep?: "email" | "configure" | "details" | "done";
   } | null>(
     orderCompleteId && orderCompleteService
       ? {
           serviceId: orderCompleteService,
-          quantity: 1,
+          budget: 0,
           orderId: orderCompleteId,
           initialStep: "details",
         }
@@ -70,7 +70,7 @@ export function PricingSection({
                       onClick: () =>
                         setSelected({
                           serviceId: service.id,
-                          quantity: t.quantity,
+                          budget: t.priceCents / 100,
                         }),
                     }))}
                   />
@@ -97,7 +97,7 @@ export function PricingSection({
                     onClick: () =>
                       setSelected({
                         serviceId: service.id,
-                        quantity: t.quantity,
+                        budget: t.priceCents / 100,
                       }),
                   }))}
                 />
@@ -124,7 +124,7 @@ export function PricingSection({
       {selected && (
         <CheckoutModal
           serviceId={selected.serviceId}
-          initialQuantity={selected.quantity}
+          initialBudget={selected.budget}
           orderId={selected.orderId}
           initialStep={selected.initialStep}
           onClose={() => setSelected(null)}

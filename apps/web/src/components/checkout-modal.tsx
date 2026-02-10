@@ -8,13 +8,13 @@ type Step = "email" | "configure" | "details" | "done";
 
 export function CheckoutModal({
   serviceId,
-  initialQuantity,
+  initialBudget,
   orderId: initialOrderId,
   initialStep,
   onClose,
 }: {
   serviceId: ServiceId;
-  initialQuantity: number;
+  initialBudget: number;
   orderId?: string;
   initialStep?: Step;
   onClose: () => void;
@@ -22,7 +22,7 @@ export function CheckoutModal({
   const [step, setStep] = useState<Step>(initialStep || "email");
   const [email, setEmail] = useState("");
   const [frequency, setFrequency] = useState<Frequency>("one_off");
-  const [quantity, setQuantity] = useState(initialQuantity);
+  const [budget, setBudget] = useState(initialBudget);
   const [brandUrl, setBrandUrl] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,10 +40,12 @@ export function CheckoutModal({
 
   if (!service) return null;
 
-  const unitPrice = service.unitPriceCents;
-  const totalCents = unitPrice * quantity;
+  const unitPriceDollars = service.unitPriceCents / 100;
+  const qty = Math.floor(budget / unitPriceDollars);
+  const totalCents = qty * service.unitPriceCents;
   const totalLabel = `$${(totalCents / 100).toLocaleString()}`;
-  const unitLabel = `$${(unitPrice / 100).toLocaleString()}`;
+  const unitLabel = `$${unitPriceDollars.toLocaleString()}`;
+  const canCheckout = qty >= 1;
 
   const frequencyLabel =
     frequency === "one_off"
@@ -52,6 +54,26 @@ export function CheckoutModal({
 
   const steps: Step[] = ["email", "configure", "details"];
   const stepIndex = steps.indexOf(step);
+
+  const handleBudgetChange = (value: number) => {
+    if (value < 0) value = 0;
+    setBudget(value);
+  };
+
+  const handleIncrement = () => {
+    // Snap to next multiple of unitPrice
+    const nextQty = Math.floor(budget / unitPriceDollars) + 1;
+    setBudget(nextQty * unitPriceDollars);
+  };
+
+  const handleDecrement = () => {
+    const currentQty = Math.floor(budget / unitPriceDollars);
+    if (currentQty <= 1) {
+      setBudget(unitPriceDollars);
+    } else {
+      setBudget((currentQty - 1) * unitPriceDollars);
+    }
+  };
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,7 +107,7 @@ export function CheckoutModal({
         body: JSON.stringify({
           email,
           service: serviceId,
-          quantity,
+          budget_usd: budget,
           frequency,
         }),
       });
@@ -142,9 +164,9 @@ export function CheckoutModal({
         <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <div>
             <div className="text-sm text-gray-500">{service.name}</div>
-            {step !== "email" && (
+            {step !== "email" && canCheckout && (
               <div className="font-semibold">
-                {quantity} {service.unit} &middot; {totalLabel}
+                {qty} {service.unit} &middot; {totalLabel}
                 {frequencyLabel}
               </div>
             )}
@@ -209,7 +231,7 @@ export function CheckoutModal({
             </form>
           )}
 
-          {/* Step 2: Frequency + Volume */}
+          {/* Step 2: Frequency + Budget */}
           {step === "configure" && (
             <form onSubmit={handleCheckout}>
               {/* Frequency */}
@@ -233,58 +255,66 @@ export function CheckoutModal({
                 ))}
               </div>
 
-              {/* Volume */}
+              {/* Budget */}
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Volume
+                Budget
               </label>
               <div className="flex items-center gap-3 mb-2">
                 <button
                   type="button"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  onClick={handleDecrement}
                   className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-lg text-lg hover:border-gray-300 transition"
                 >
                   -
                 </button>
-                <input
-                  type="number"
-                  min={1}
-                  value={quantity}
-                  onChange={(e) => {
-                    const v = parseInt(e.target.value, 10);
-                    if (v >= 1) setQuantity(v);
-                  }}
-                  className="w-20 text-center border border-gray-200 rounded-lg py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                />
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">
+                    $
+                  </span>
+                  <input
+                    type="number"
+                    min={1}
+                    inputMode="numeric"
+                    value={budget}
+                    onChange={(e) => {
+                      const v = parseInt(e.target.value, 10);
+                      if (!isNaN(v)) handleBudgetChange(v);
+                    }}
+                    className="w-full text-center border border-gray-200 rounded-lg py-2 pl-7 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                </div>
                 <button
                   type="button"
-                  onClick={() => setQuantity(quantity + 1)}
+                  onClick={handleIncrement}
                   className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-lg text-lg hover:border-gray-300 transition"
                 >
                   +
                 </button>
-                <span className="text-sm text-gray-500">
-                  {service.unit}
-                </span>
               </div>
               <p className="text-xs text-gray-400 mb-5">
                 {unitLabel} per {service.unit.replace(/s$/, "")}
+                {canCheckout && ` · ${qty} ${service.unit}`}
               </p>
 
               {/* Total */}
               <div className="flex items-center justify-between py-3 border-t border-gray-100 mb-4">
                 <span className="text-sm text-gray-500">Total</span>
                 <span className="text-lg font-semibold">
-                  {totalLabel}
-                  {frequencyLabel}
+                  {canCheckout ? totalLabel : `Minimum ${unitLabel}`}
+                  {canCheckout && frequencyLabel}
                 </span>
               </div>
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !canCheckout}
                 className="w-full bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50"
               >
-                {loading ? "Redirecting to payment..." : `Checkout ${totalLabel}`}
+                {loading
+                  ? "Redirecting to payment..."
+                  : canCheckout
+                    ? `Checkout ${totalLabel}`
+                    : `Minimum ${unitLabel}`}
               </button>
             </form>
           )}
@@ -355,7 +385,7 @@ export function CheckoutModal({
                 You&apos;re all set!
               </h3>
               <p className="mt-2 text-sm text-gray-500">
-                Your campaign starts instantly. Check your email for confirmation and API key.
+                Your campaign starts instantly. Check your email for confirmation.
               </p>
               <button
                 onClick={onClose}

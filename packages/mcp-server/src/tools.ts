@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  requestApiKey,
   listServices,
   createOrder,
   getOrderStatus,
@@ -8,18 +7,6 @@ import {
 } from "./api-client.js";
 
 export const tools = [
-  {
-    name: "growthservice_request_api_key",
-    description:
-      'Request a GrowthService API key. The key will be sent to the provided email. The user should then paste it here so you can make authenticated requests. Set the GROWTHSERVICE_API_KEY env var or use this tool.',
-    inputSchema: z.object({
-      email: z.string().email().describe("Email address to receive the API key"),
-    }),
-    handler: async (input: { email: string }) => {
-      const result = await requestApiKey(input.email);
-      return `${result.message}\n\nPlease check your email and paste the API key here. Then set it as GROWTHSERVICE_API_KEY in your MCP server config.`;
-    },
-  },
   {
     name: "growthservice_list_services",
     description:
@@ -43,7 +30,7 @@ export const tools = [
   {
     name: "growthservice_create_order",
     description:
-      "Create an order for a GrowthService product. Returns a Stripe payment link. The user must open this link and pay to activate the order.",
+      "Create an order for a GrowthService product. Specify a budget in USD — the server computes the quantity. Returns a Stripe payment link. The user must open this link and pay to activate the order.",
     inputSchema: z.object({
       service: z
         .enum([
@@ -53,7 +40,14 @@ export const tools = [
           "sales_positive_replies",
         ])
         .describe("Service ID"),
-      quantity: z.number().int().positive().describe("Number of results to deliver"),
+      budget_usd: z
+        .number()
+        .positive()
+        .describe("Budget in USD. Quantity is computed server-side (qty = floor(budget / unit_price))"),
+      frequency: z
+        .enum(["one_off", "weekly", "monthly", "quarterly"])
+        .optional()
+        .describe("Billing frequency (default: one_off)"),
       brand_url: z
         .string()
         .url()
@@ -66,12 +60,13 @@ export const tools = [
     }),
     handler: async (input: {
       service: string;
-      quantity: number;
+      budget_usd: number;
+      frequency?: string;
       brand_url?: string;
       description?: string;
     }) => {
       const result = await createOrder(input);
-      return `Order created!\n\n- Order ID: ${result.order_id}\n- Amount: $${(result.amount_cents / 100).toFixed(2)}\n- Payment link: ${result.checkout_url}\n\nPlease open the payment link to complete your purchase. Once paid, we'll start working on your campaign within 24 hours.`;
+      return `Order created!\n\n- Order ID: ${result.order_id}\n- Budget: $${result.budget_usd}\n- Quantity: ${result.quantity}\n- Amount charged: $${(result.amount_cents / 100).toFixed(2)}\n- Payment link: ${result.checkout_url}\n\nPlease open the payment link to complete your purchase. Once paid, your campaign starts within 24 hours.`;
     },
   },
   {
@@ -82,7 +77,7 @@ export const tools = [
     }),
     handler: async (input: { order_id: string }) => {
       const order = await getOrderStatus(input.order_id);
-      return `Order ${order.id}:\n- Service: ${order.service}\n- Quantity: ${order.quantity}\n- Status: ${order.status}\n- Amount: $${(order.amount_cents / 100).toFixed(2)}\n- Created: ${order.created_at}${order.paid_at ? `\n- Paid: ${order.paid_at}` : ""}${order.completed_at ? `\n- Completed: ${order.completed_at}` : ""}`;
+      return `Order ${order.id}:\n- Service: ${order.service}\n- Quantity: ${order.quantity}\n- Status: ${order.status}\n- Amount: $${(order.amount_cents / 100).toFixed(2)}${order.budget_usd ? `\n- Budget: $${order.budget_usd}` : ""}\n- Created: ${order.created_at}${order.paid_at ? `\n- Paid: ${order.paid_at}` : ""}${order.completed_at ? `\n- Completed: ${order.completed_at}` : ""}`;
     },
   },
   {

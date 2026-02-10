@@ -33,7 +33,7 @@ export default function McpServerPage() {
       "command": "npx",
       "args": ["@growthservice/mcp-server"],
       "env": {
-        "GROWTHSERVICE_API_KEY": "gsk_YOUR_KEY"
+        "GROWTHSERVICE_EMAIL": "you@company.com"
       }
     }
   }
@@ -45,18 +45,13 @@ export default function McpServerPage() {
         <h2 className="text-xl font-semibold">Available tools</h2>
         <div className="mt-4 space-y-4">
           <ToolDoc
-            name="growthservice_request_api_key"
-            description="Get an API key sent to your email."
-            params={`{ "email": "you@company.com" }`}
-          />
-          <ToolDoc
             name="growthservice_list_services"
             description="List all services with pricing tiers."
           />
           <ToolDoc
             name="growthservice_create_order"
             description="Create an order and get a payment link."
-            params={`{ "service": "sales_leads", "quantity": 10, "brand_url": "...", "description": "..." }`}
+            params={`{ "service": "sales_leads", "budget_usd": 80, "brand_url": "...", "description": "..." }`}
           />
           <ToolDoc
             name="growthservice_order_status"

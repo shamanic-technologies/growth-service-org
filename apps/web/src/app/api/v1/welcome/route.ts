@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOrCreateApiKey } from "@/lib/db";
-import { sendWelcomeEmail, sendApiKeyEmail } from "@/lib/email";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,13 +10,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const apiKeyRecord = await getOrCreateApiKey(email);
-
-    // Must await on Vercel serverless to ensure emails are sent
-    await Promise.all([
-      sendWelcomeEmail(email),
-      sendApiKeyEmail(email, apiKeyRecord.id),
-    ]).catch((err) => console.error("Welcome email error:", err));
+    await sendWelcomeEmail(email).catch((err) =>
+      console.error("Welcome email error:", err)
+    );
 
     return NextResponse.json({ ok: true });
   } catch (e) {

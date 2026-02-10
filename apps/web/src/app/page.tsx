@@ -18,7 +18,7 @@ const faqItems = [
   },
   {
     q: "Can I use this programmatically?",
-    a: "Yes. Get an API key via POST /api/v1/auth/request-key, then create orders via the REST API. We also have an MCP server for AI assistants.",
+    a: "Yes. POST /api/v1/orders with your email and budget — no API key needed. We also have an MCP server for AI assistants.",
   },
   {
     q: "What is MCP Factory?",
@@ -166,7 +166,7 @@ export default async function Home({
                 <div className="text-2xl">⚡</div>
                 <h3 className="mt-3 font-semibold">REST API</h3>
                 <p className="mt-2 text-sm text-gray-500">
-                  Programmatic access. Get an API key, create orders, track results.
+                  Programmatic access. Create orders with just your email, track results.
                 </p>
               </div>
               <div className="bg-white border border-gray-100 rounded-2xl p-6">
@@ -181,7 +181,7 @@ export default async function Home({
             {/* API preview */}
             <div className="mt-12 grid md:grid-cols-2 gap-6 text-left">
               <pre className="bg-gray-900 text-gray-100 rounded-2xl p-4 md:p-6 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre">
-<span className="text-gray-500"># Get your API key</span>{"\n"}curl -X POST growthservice.org/api/v1/auth/request-key \{"\n"}{"  "}{`-d '{"email":"you@co.com"}'`}{"\n"}{"\n"}<span className="text-gray-500"># Create an order</span>{"\n"}curl -X POST growthservice.org/api/v1/orders \{"\n"}{"  "}-H &quot;Authorization: Bearer gsk_...&quot; \{"\n"}{"  "}{`-d '{"service":"sales_leads","quantity":10}'`}
+<span className="text-gray-500"># Create an order</span>{"\n"}curl -X POST growthservice.org/api/v1/orders \{"\n"}{"  "}-H &quot;Content-Type: application/json&quot; \{"\n"}{"  "}{`-d '{"email":"you@co.com","service":"sales_leads","budget_usd":80}'`}
               </pre>
               <pre className="bg-gray-900 text-gray-100 rounded-2xl p-4 md:p-6 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre">
 <span className="text-gray-500">// Claude Desktop config</span>{"\n"}{`{
@@ -192,7 +192,7 @@ export default async function Home({
         "@growthservice/mcp-server"
       ],
       "env": {
-        "GROWTHSERVICE_API_KEY": "gsk_..."
+        "GROWTHSERVICE_EMAIL": "you@co.com"
       }
     }
   }

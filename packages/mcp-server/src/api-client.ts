@@ -1,6 +1,6 @@
 const BASE_URL =
   process.env.GROWTHSERVICE_URL || "https://growthservice.org";
-const API_KEY = process.env.GROWTHSERVICE_API_KEY || "";
+const EMAIL = process.env.GROWTHSERVICE_EMAIL || "";
 
 async function request(
   method: string,
@@ -10,9 +10,6 @@ async function request(
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
-  if (API_KEY) {
-    headers["Authorization"] = `Bearer ${API_KEY}`;
-  }
 
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
@@ -27,27 +24,24 @@ async function request(
   return data;
 }
 
-export async function requestApiKey(email: string) {
-  return request("POST", "/api/v1/auth/request-key", { email });
-}
-
 export async function listServices() {
   return request("GET", "/api/v1/services");
 }
 
 export async function createOrder(params: {
   service: string;
-  quantity: number;
+  budget_usd: number;
+  frequency?: string;
   brand_url?: string;
   description?: string;
 }) {
-  return request("POST", "/api/v1/orders", params);
+  return request("POST", "/api/v1/orders", { ...params, email: EMAIL });
 }
 
 export async function getOrderStatus(orderId: string) {
-  return request("GET", `/api/v1/orders/${orderId}`);
+  return request("GET", `/api/v1/orders/${orderId}?email=${encodeURIComponent(EMAIL)}`);
 }
 
 export async function listOrders() {
-  return request("GET", "/api/v1/orders");
+  return request("GET", `/api/v1/orders?email=${encodeURIComponent(EMAIL)}`);
 }
