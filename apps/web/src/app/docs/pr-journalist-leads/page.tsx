@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "PR Journalist Leads - GrowthService Docs",
   description:
-    "Get journalists who opened your website, press kit, or replied with interest. Starting at $40 for 1 lead guaranteed.",
+    "Get journalists who opened your website, press kit, or replied with interest. Starting at $20 for 1 lead guaranteed.",
 };
 
 export default function PrJournalistLeadsPage() {
@@ -30,9 +30,9 @@ export default function PrJournalistLeadsPage() {
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Pricing</h2>
         <div className="mt-4 grid sm:grid-cols-3 gap-4">
-          <TierCard tier="Starter" quantity="1 lead guaranteed" price="$40" />
-          <TierCard tier="Growth" quantity="10 leads guaranteed" price="$400" />
-          <TierCard tier="Scale" quantity="100 leads guaranteed" price="$4,000" />
+          <TierCard tier="Starter" quantity="1 lead guaranteed" price="$20" />
+          <TierCard tier="Growth" quantity="10 leads guaranteed" price="$200" />
+          <TierCard tier="Scale" quantity="100 leads guaranteed" price="$2,000" />
         </div>
       </section>
 

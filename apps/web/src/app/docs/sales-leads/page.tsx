@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Sales Leads - GrowthService Docs",
   description:
-    "Get prospects who opened your website or replied to your cold email outreach. Starting at $40 for 1 lead guaranteed.",
+    "Get prospects who opened your website or replied to your cold email outreach. Starting at $8 for 1 lead guaranteed.",
 };
 
 export default function SalesLeadsPage() {
@@ -30,9 +30,9 @@ export default function SalesLeadsPage() {
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Pricing</h2>
         <div className="mt-4 grid sm:grid-cols-3 gap-4">
-          <TierCard tier="Starter" quantity="1 lead guaranteed" price="$40" />
-          <TierCard tier="Growth" quantity="10 leads guaranteed" price="$400" />
-          <TierCard tier="Scale" quantity="100 leads guaranteed" price="$4,000" />
+          <TierCard tier="Starter" quantity="1 lead guaranteed" price="$8" />
+          <TierCard tier="Growth" quantity="10 leads guaranteed" price="$80" />
+          <TierCard tier="Scale" quantity="100 leads guaranteed" price="$800" />
         </div>
       </section>
 
