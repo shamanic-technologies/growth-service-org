@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sales Positive Replies - GrowthService Docs",
+  title: "Hot Sales Leads - GrowthService Docs",
   description:
     "Get qualified prospects who expressed genuine interest in your product. Starting at $32 for 1 reply guaranteed.",
 };
@@ -10,7 +10,7 @@ export default function SalesPositiveRepliesPage() {
   return (
     <div>
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-        Sales Positive Replies
+        Hot Sales Leads
       </h1>
       <p className="mt-4 text-gray-500">
         Qualified prospects who expressed genuine interest in your product or

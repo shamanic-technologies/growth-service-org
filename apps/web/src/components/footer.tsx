@@ -30,7 +30,16 @@ export function Footer() {
       </div>
 
       <div className="max-w-6xl mx-auto mt-8 pt-8 border-t border-gray-100 text-xs text-gray-400">
-        Built on open-source MCP Factory. All services include money-back guarantee.
+        Built on open-source{" "}
+        <a
+          href="https://mcpfactory.org"
+          className="hover:underline hover:text-gray-600 transition"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          MCP Factory
+        </a>
+        . All services include money-back guarantee.
       </div>
     </footer>
   );

@@ -39,7 +39,7 @@ export default function DocsPage() {
         />
         <CardLink
           href="/docs/pr-journalist-leads"
-          title="PR Journalist Leads"
+          title="Warm Journalist Leads"
           description="Get journalists who clicked or replied to your press outreach."
         />
         <CardLink
@@ -49,12 +49,12 @@ export default function DocsPage() {
         />
         <CardLink
           href="/docs/sales-leads"
-          title="Sales Leads"
+          title="Warm Sales Leads"
           description="Prospects who opened your website or replied to outreach."
         />
         <CardLink
           href="/docs/sales-positive-replies"
-          title="Sales Positive Replies"
+          title="Hot Sales Leads"
           description="Qualified prospects who expressed genuine interest."
         />
       </div>

@@ -22,7 +22,7 @@ const faqItems = [
   },
   {
     q: "What is MCP Factory?",
-    a: "MCP Factory is the open-source engine that powers GrowthService. You can use it directly (BYOK (Bring Your Own Keys), no markups, no guarantees) or use GrowthService for the managed, guaranteed experience.",
+    a: "MCP Factory is the open-source infrastructure that powers GrowthService. GrowthService adds managed campaigns, guaranteed results, and a money-back guarantee on top.",
   },
   {
     q: "How fast do I get results?",
@@ -83,10 +83,10 @@ export default async function Home({
                 <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">
                   Sales
                 </div>
-                <h3 className="mt-2 text-lg font-semibold">Cold Email Outreach</h3>
+                <h3 className="mt-2 text-lg font-semibold">Sales Outreach</h3>
                 <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                  AI finds and emails your ideal prospects. Get sales leads
-                  (clicks/opens) or positive replies (qualified interest).
+                  AI finds and contacts your ideal prospects. Get warm leads
+                  (clicks/opens) or hot leads (qualified interest).
                 </p>
               </div>
               <div className="border border-gray-100 rounded-2xl p-6">
