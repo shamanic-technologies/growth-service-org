@@ -82,9 +82,9 @@ export async function POST(req: NextRequest) {
       amountCents,
     });
 
-    // Send admin notification (don't block response)
+    // Send admin notification before responding (must await on Vercel serverless)
     const amountLabel = `$${(amountCents / 100).toLocaleString()}`;
-    sendAdminNotificationEmail(
+    await sendAdminNotificationEmail(
       order.id,
       apiKeyRecord.email,
       serviceData.name,

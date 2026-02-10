@@ -13,8 +13,8 @@ export async function POST(req: NextRequest) {
 
     const apiKeyRecord = await getOrCreateApiKey(email);
 
-    // Send emails in background (don't block the response)
-    Promise.all([
+    // Must await on Vercel serverless to ensure emails are sent
+    await Promise.all([
       sendWelcomeEmail(email),
       sendApiKeyEmail(email, apiKeyRecord.id),
     ]).catch((err) => console.error("Welcome email error:", err));
