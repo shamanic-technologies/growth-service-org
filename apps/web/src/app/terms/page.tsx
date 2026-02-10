@@ -45,25 +45,24 @@ export default function TermsPage() {
               </h2>
               <div className="mt-3 space-y-3">
                 <div>
-                  <strong className="text-gray-900">Warm Journalist Leads:</strong>{" "}
-                  A journalist who opened your website, viewed your press kit, or
-                  replied with interest to your press outreach.
+                  <strong className="text-gray-900">Engaged Journalist Leads:</strong>{" "}
+                  A journalist who clicked your website, viewed your press kit, or
+                  opened your pitch.
                 </div>
                 <div>
-                  <strong className="text-gray-900">PR Publication Proposals:</strong>{" "}
-                  A journalist who responded positively and confirmed interest in
-                  writing about or publishing content related to your brand.
+                  <strong className="text-gray-900">Hot Journalist Leads:</strong>{" "}
+                  A journalist who expressed interest in an interview, written
+                  contribution (op-ed, Q&amp;A), podcast invitation, or quoted your brand.
+                </div>
+                <div>
+                  <strong className="text-gray-900">Engaged Sales Leads:</strong>{" "}
+                  A prospect who visited your website after receiving outreach on
+                  your behalf.
                 </div>
                 <div>
                   <strong className="text-gray-900">Warm Sales Leads:</strong>{" "}
-                  A prospect who opened your website or replied with interest to
-                  your outreach.
-                </div>
-                <div>
-                  <strong className="text-gray-900">Hot Sales Leads:</strong>{" "}
-                  A prospect who expressed genuine interest in your product or
-                  service, such as requesting a demo, asking questions, or
-                  indicating a desire to learn more.
+                  A prospect who replied with genuine interest, such as requesting
+                  a demo, asking questions, or wanting to learn more.
                 </div>
               </div>
             </section>
@@ -78,7 +77,7 @@ export default function TermsPage() {
                 tier size and service type.
               </p>
               <p className="mt-2">
-                Warm and hot sales leads are typically delivered
+                Engaged and warm sales leads are typically delivered
                 faster than PR services. Journalists take more time to respond
                 than sales prospects.
               </p>
@@ -134,28 +133,28 @@ export default function TermsPage() {
                   </thead>
                   <tbody className="text-gray-600">
                     <tr className="border-b border-gray-100">
-                      <td className="py-2 pr-4">Warm Sales Leads</td>
+                      <td className="py-2 pr-4">Engaged Sales Leads</td>
                       <td className="py-2 pr-4">Starter</td>
                       <td className="py-2 pr-4">$8</td>
                       <td className="py-2 pr-4">$2</td>
                       <td className="py-2">$6</td>
                     </tr>
                     <tr className="border-b border-gray-100">
-                      <td className="py-2 pr-4">Warm Sales Leads</td>
+                      <td className="py-2 pr-4">Engaged Sales Leads</td>
                       <td className="py-2 pr-4">Growth</td>
                       <td className="py-2 pr-4">$80</td>
                       <td className="py-2 pr-4">$20</td>
                       <td className="py-2">$60</td>
                     </tr>
                     <tr className="border-b border-gray-100">
-                      <td className="py-2 pr-4">PR Publication Proposals</td>
+                      <td className="py-2 pr-4">Hot Journalist Leads</td>
                       <td className="py-2 pr-4">Starter</td>
                       <td className="py-2 pr-4">$600</td>
                       <td className="py-2 pr-4">$150</td>
                       <td className="py-2">$450</td>
                     </tr>
                     <tr>
-                      <td className="py-2 pr-4">Warm Journalist Leads</td>
+                      <td className="py-2 pr-4">Engaged Journalist Leads</td>
                       <td className="py-2 pr-4">Scale</td>
                       <td className="py-2 pr-4">$2,000</td>
                       <td className="py-2 pr-4">$500</td>

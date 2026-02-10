@@ -14,7 +14,7 @@ const faqItems = [
   },
   {
     q: "What counts as a 'lead'?",
-    a: "A lead is someone who opened your website, viewed your press kit, or replied with interest. You receive their name and email address so you can follow up and close them.",
+    a: "An engaged lead visited your website or press kit. A warm lead (sales) or hot lead (PR) replied with genuine interest. You receive their name and email address so you can follow up and close them.",
   },
   {
     q: "Can I use this programmatically?",
@@ -51,10 +51,10 @@ export default async function Home({
   const params = await searchParams;
   const orderCompleteId = params.order_complete;
   const orderCompleteService = params.service as
-    | "sales_leads"
-    | "sales_positive_replies"
-    | "pr_journalist_leads"
-    | "pr_publication_proposals"
+    | "sales_engaged_leads"
+    | "sales_warm_leads"
+    | "pr_engaged_leads"
+    | "pr_hot_leads"
     | undefined;
 
   return (
@@ -85,8 +85,8 @@ export default async function Home({
                 </div>
                 <h3 className="mt-2 text-lg font-semibold">Sales Outreach</h3>
                 <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                  AI finds and contacts your ideal prospects. Get warm leads
-                  (clicks/opens) or hot leads (qualified interest).
+                  AI finds and contacts your ideal prospects. Get engaged leads
+                  (website visits) or warm leads (genuine interest).
                 </p>
               </div>
               <div className="border border-gray-100 rounded-2xl p-6">
@@ -95,8 +95,8 @@ export default async function Home({
                 </div>
                 <h3 className="mt-2 text-lg font-semibold">Press Outreach</h3>
                 <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                  AI pitches journalists at scale. Get journalist leads
-                  (clicks/opens) or publication proposals (positive replies).
+                  AI pitches journalists at scale. Get engaged leads
+                  (clicks/opens) or hot leads (interview, op-ed, quote).
                 </p>
               </div>
             </div>
@@ -181,7 +181,7 @@ export default async function Home({
             {/* API preview */}
             <div className="mt-12 grid md:grid-cols-2 gap-6 text-left">
               <pre className="bg-gray-900 text-gray-100 rounded-2xl p-4 md:p-6 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre">
-<span className="text-gray-500"># Create an order</span>{"\n"}curl -X POST growthservice.org/api/v1/orders \{"\n"}{"  "}-H &quot;Content-Type: application/json&quot; \{"\n"}{"  "}{`-d '{"email":"you@co.com","service":"sales_leads","budget_usd":80}'`}
+<span className="text-gray-500"># Create an order</span>{"\n"}curl -X POST growthservice.org/api/v1/orders \{"\n"}{"  "}-H &quot;Content-Type: application/json&quot; \{"\n"}{"  "}{`-d '{"email":"you@co.com","service":"sales_engaged_leads","budget_usd":80}'`}
               </pre>
               <pre className="bg-gray-900 text-gray-100 rounded-2xl p-4 md:p-6 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre">
 <span className="text-gray-500">// Claude Desktop config</span>{"\n"}{`{

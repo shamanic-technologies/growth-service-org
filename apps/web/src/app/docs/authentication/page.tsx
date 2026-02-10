@@ -36,7 +36,7 @@ export default function AuthenticationPage() {
   -H "Content-Type: application/json" \\
   -d '{
     "email": "you@company.com",
-    "service": "sales_leads",
+    "service": "sales_engaged_leads",
     "budget_usd": 80
   }'`}
           </pre>

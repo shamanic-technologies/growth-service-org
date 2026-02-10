@@ -80,9 +80,9 @@ export default function ApiReferencePage() {
 {`{
   "services": [
     {
-      "id": "sales_leads",
-      "name": "Warm Sales Leads",
-      "description": "Prospects who opened your website or replied...",
+      "id": "sales_engaged_leads",
+      "name": "Engaged Sales Leads",
+      "description": "Prospects who visited your website after receiving outreach...",
       "unit": "leads",
       "unitPriceCents": 800,
       "tiers": [
@@ -122,7 +122,7 @@ export default function ApiReferencePage() {
               type: "string",
               required: true,
               description:
-                "Service ID: sales_leads, sales_positive_replies, pr_journalist_leads, or pr_publication_proposals",
+                "Service ID: sales_engaged_leads, sales_warm_leads, pr_engaged_leads, or pr_hot_leads",
             },
             {
               name: "budget_usd",
@@ -160,7 +160,7 @@ export default function ApiReferencePage() {
   -H "Content-Type: application/json" \\
   -d '{
     "email": "you@company.com",
-    "service": "sales_leads",
+    "service": "sales_engaged_leads",
     "budget_usd": 80,
     "brand_url": "https://yourbrand.com",
     "description": "B2B SaaS targeting CTOs at mid-market companies"
@@ -175,7 +175,7 @@ export default function ApiReferencePage() {
   "quantity": 10,
   "amount_cents": 8000,
   "budget_usd": 80,
-  "service": "sales_leads"
+  "service": "sales_engaged_leads"
 }`}
         </pre>
 
@@ -220,7 +220,7 @@ export default function ApiReferencePage() {
         <pre className="mt-2 bg-gray-50 rounded-xl p-4 font-mono text-xs overflow-x-auto whitespace-pre">
 {`{
   "id": "ord_a1b2c3d4e5",
-  "service": "sales_leads",
+  "service": "sales_engaged_leads",
   "quantity": 10,
   "frequency": "one_off",
   "status": "paid",
@@ -316,7 +316,7 @@ export default function ApiReferencePage() {
   "orders": [
     {
       "id": "ord_a1b2c3d4e5",
-      "service": "sales_leads",
+      "service": "sales_engaged_leads",
       "quantity": 10,
       "frequency": "one_off",
       "status": "paid",

@@ -11,10 +11,10 @@ const NAV = [
   { href: "/docs/authentication", label: "Authentication" },
   { href: "/docs/mcp-server", label: "MCP Server" },
   { heading: "Services" },
-  { href: "/docs/pr-journalist-leads", label: "Warm Journalist Leads" },
-  { href: "/docs/pr-publication-proposals", label: "PR Publication Proposals" },
-  { href: "/docs/sales-leads", label: "Warm Sales Leads" },
-  { href: "/docs/sales-positive-replies", label: "Hot Sales Leads" },
+  { href: "/docs/pr-engaged-leads", label: "Engaged Journalist Leads" },
+  { href: "/docs/pr-hot-leads", label: "Hot Journalist Leads" },
+  { href: "/docs/sales-engaged-leads", label: "Engaged Sales Leads" },
+  { href: "/docs/sales-warm-leads", label: "Warm Sales Leads" },
 ] as const;
 
 export function DocsSidebar() {

@@ -22,7 +22,9 @@ export const metadata: Metadata = {
     "AI-powered",
     "sales leads",
     "journalist leads",
-    "publication proposals",
+    "engaged leads",
+    "warm leads",
+    "hot leads",
   ],
   metadataBase: new URL("https://growthservice.org"),
   openGraph: {
@@ -92,8 +94,8 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Warm Journalist Leads",
-          description: "Journalists who engaged with your press outreach",
+          name: "Engaged Journalist Leads",
+          description: "Journalists who clicked your website, viewed your press kit, or opened your pitch",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
@@ -106,23 +108,23 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "PR Publication Proposals",
+          name: "Hot Journalist Leads",
           description:
-            "Positive replies from journalists ready to publish about your brand",
+            "Journalists who expressed interest in an interview, written contribution, podcast invitation, or quoted your brand",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
           price: "600.00",
           priceCurrency: "USD",
-          description: "Starting at $600 for 1 proposal",
+          description: "Starting at $600 for 1 lead",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Warm Sales Leads",
-          description: "Prospects who engaged with your sales outreach",
+          name: "Engaged Sales Leads",
+          description: "Prospects who visited your website after receiving outreach on your behalf",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
@@ -135,9 +137,9 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Hot Sales Leads",
+          name: "Warm Sales Leads",
           description:
-            "Qualified prospects who expressed genuine interest in your product",
+            "Prospects who replied with genuine interest — asking questions, requesting a demo, or wanting to learn more",
         },
         priceSpecification: {
           "@type": "PriceSpecification",

@@ -6,10 +6,10 @@ import { sendAdminNotificationEmail, sendWelcomeEmail } from "@/lib/email";
 import type { ServiceId } from "@/lib/services";
 
 const VALID_SERVICES: ServiceId[] = [
-  "sales_leads",
-  "sales_positive_replies",
-  "pr_journalist_leads",
-  "pr_publication_proposals",
+  "sales_engaged_leads",
+  "sales_warm_leads",
+  "pr_engaged_leads",
+  "pr_hot_leads",
 ];
 
 export async function POST(req: NextRequest) {
