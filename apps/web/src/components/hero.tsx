@@ -1,45 +1,53 @@
+import { AISearchLogos } from "./ai-logos";
+
 export function Hero() {
   return (
-    <section className="pt-24 md:pt-32 pb-16 md:pb-20 px-4 md:px-6">
+    <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-4 md:px-6 relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/40 via-white to-white -z-10" />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-100/30 rounded-full blur-3xl -z-10" />
+
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-tight">
-          Growth Services.
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+          <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+          100% money-back guarantee
+        </div>
+
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-[1.1]">
+          Get Recommended by
           <br />
-          <span className="text-gray-400">API-First.</span>
+          <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+            AI Search Engines
+          </span>
         </h1>
 
         <p className="mt-6 text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-          Sales outreach, PR outreach, and more. Pay per result. Use via API, MCP,
-          or just click Buy. Money-back guarantee on everything.
+          Boost your visibility on ChatGPT, Google AI Overview, Perplexity, and more.
+          One organic press article per month. $350/mo. Cancel anytime.
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <a
             href="#pricing"
-            className="bg-gray-900 text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition"
+            className="bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-900/10"
           >
-            See Pricing
+            Start for $350/mo
           </a>
           <a
-            href="/docs"
-            className="border border-gray-200 text-gray-700 px-8 py-3 rounded-full text-sm font-medium hover:border-gray-300 transition"
+            href="#how-it-works"
+            className="border border-gray-200 text-gray-700 px-8 py-3.5 rounded-full text-sm font-medium hover:border-gray-300 transition"
           >
-            Read Docs
+            How It Works
           </a>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-          {[
-            { value: "Transparent", label: "Pricing" },
-            { value: "Guaranteed", label: "Outcomes" },
-            { value: "Instant", label: "Delivery" },
-            { value: "Instant", label: "Onboarding" },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <div className="text-xl md:text-2xl font-semibold">{stat.value}</div>
-              <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
-            </div>
-          ))}
+        {/* AI Search Logos */}
+        <div className="mt-14">
+          <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-4">
+            Get mentioned on
+          </p>
+          <AISearchLogos size="md" />
         </div>
       </div>
     </section>
