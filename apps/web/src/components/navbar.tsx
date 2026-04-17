@@ -11,24 +11,24 @@ export function Navbar() {
         <a href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
           <svg width="24" height="24" viewBox="0 0 32 32" className="shrink-0">
             <rect width="32" height="32" rx="8" fill="#111" />
-            <path d="M8 22L14 14L19 17L24 8" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path d="M20 8H24V12" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d="M8 22L14 14L19 17L24 8" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d="M20 8H24V12" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </svg>
           GrowthService
         </a>
 
         <div className="hidden md:flex items-center gap-8 text-sm text-gray-600">
-          <a href="#services" className="hover:text-gray-900 transition">
-            Services
+          <a href="#how-it-works" className="hover:text-gray-900 transition">
+            How It Works
+          </a>
+          <a href="#results" className="hover:text-gray-900 transition">
+            Results
           </a>
           <a href="#pricing" className="hover:text-gray-900 transition">
             Pricing
           </a>
-          <a href="#how-it-works" className="hover:text-gray-900 transition">
-            How It Works
-          </a>
-          <a href="/docs" className="hover:text-gray-900 transition">
-            Docs
+          <a href="#faq" className="hover:text-gray-900 transition">
+            FAQ
           </a>
           <a
             href="#pricing"
@@ -62,17 +62,17 @@ export function Navbar() {
 
       {menuOpen && (
         <div className="md:hidden bg-white border-b border-gray-100 px-4 pb-4 flex flex-col gap-3 text-sm text-gray-600">
-          <a href="#services" onClick={() => setMenuOpen(false)}>
-            Services
+          <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
+            How It Works
+          </a>
+          <a href="#results" onClick={() => setMenuOpen(false)}>
+            Results
           </a>
           <a href="#pricing" onClick={() => setMenuOpen(false)}>
             Pricing
           </a>
-          <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
-            How It Works
-          </a>
-          <a href="/docs" onClick={() => setMenuOpen(false)}>
-            Docs
+          <a href="#faq" onClick={() => setMenuOpen(false)}>
+            FAQ
           </a>
         </div>
       )}
