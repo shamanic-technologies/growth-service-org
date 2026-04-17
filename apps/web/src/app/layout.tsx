@@ -6,40 +6,40 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "GrowthService - AI-Native Growth Agency",
+    default: "GrowthService — Get Recommended by AI Search Engines",
     template: "%s | GrowthService",
   },
   description:
-    "Guaranteed growth results via API & MCP. Sales outreach, PR outreach, and more. Transparent pricing, money-back guarantee. Powered by MCP Factory.",
+    "Boost your visibility on ChatGPT, Google AI Overview, Perplexity, and more. One organic press article per month in DR50+ publications. $350/mo with 100% money-back guarantee.",
   keywords: [
-    "growth agency",
-    "sales outreach",
-    "PR outreach",
-    "lead generation",
-    "API",
-    "MCP",
-    "money-back guarantee",
-    "AI-powered",
-    "sales leads",
-    "journalist leads",
-    "engaged leads",
-    "warm leads",
-    "hot leads",
+    "AI search visibility",
+    "ChatGPT recommendations",
+    "Google AI Overview",
+    "Perplexity visibility",
+    "AI search optimization",
+    "organic press coverage",
+    "PR for AI search",
+    "get recommended by AI",
+    "AI citations",
+    "AI SEO",
+    "domain rating",
+    "DR50 backlinks",
+    "press articles",
   ],
   metadataBase: new URL("https://growthservice.org"),
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "GrowthService",
-    title: "GrowthService - AI-Native Growth Agency",
+    title: "GrowthService — Get Recommended by AI Search Engines",
     description:
-      "Guaranteed growth results via API & MCP. Sales outreach, PR outreach, lead generation. Transparent pricing, 90-day money-back guarantee.",
+      "Boost your visibility on ChatGPT, Google AI Overview & Perplexity. 1 organic press article/month. $350/mo. 100% money-back guarantee.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "GrowthService - AI-Native Growth Agency",
+    title: "GrowthService — Get Recommended by AI Search Engines",
     description:
-      "Guaranteed growth results via API & MCP. Transparent pricing, 90-day money-back guarantee.",
+      "AI Search visibility through organic press. $350/mo. 100% money-back guarantee.",
   },
   icons: {
     icon: "/icon.svg",
@@ -60,9 +60,8 @@ const organizationJsonLd = {
   name: "GrowthService",
   url: "https://growthservice.org",
   description:
-    "AI-native growth agency with guaranteed results. Sales outreach, PR outreach, lead generation via API and MCP.",
+    "AI Search visibility through organic press coverage. Get recommended by ChatGPT, Google AI Overview, Perplexity, and more.",
   foundingDate: "2026",
-  sameAs: ["https://mcpfactory.org", "https://growthagency.dev"],
 };
 
 const websiteJsonLd = {
@@ -70,17 +69,12 @@ const websiteJsonLd = {
   "@type": "WebSite",
   name: "GrowthService",
   url: "https://growthservice.org",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: "https://growthservice.org/docs?q={search_term_string}",
-    "query-input": "required name=search_term_string",
-  },
 };
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Lead Generation",
+  serviceType: "AI Search Visibility",
   provider: {
     "@type": "Organization",
     name: "GrowthService",
@@ -88,64 +82,22 @@ const serviceJsonLd = {
   },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Growth Services",
+    name: "AI Search Visibility Plans",
     itemListElement: [
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Engaged Journalist Leads",
-          description: "Journalists who clicked your website or viewed your press kit",
-        },
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          price: "20.00",
-          priceCurrency: "USD",
-          description: "Starting at $20 for 1 lead",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Hot Journalist Leads",
+          name: "AI Search Visibility — Monthly Subscription",
           description:
-            "Journalists who expressed interest in an interview, written contribution, podcast invitation, or quoted your brand",
+            "1 organic press article per month in a DR50+ publication. Boosts visibility on ChatGPT, Google AI Overview, Perplexity, and other AI search engines.",
         },
         priceSpecification: {
           "@type": "PriceSpecification",
-          price: "600.00",
+          price: "350.00",
           priceCurrency: "USD",
-          description: "Starting at $600 for 1 lead",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Engaged Sales Leads",
-          description: "Prospects who visited your website after we reached out about your brand",
-        },
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          price: "8.00",
-          priceCurrency: "USD",
-          description: "Starting at $8 for 1 lead",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Warm Sales Leads",
-          description:
-            "Prospects who replied with genuine interest — asking questions, requesting a demo, or wanting to learn more",
-        },
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          price: "32.00",
-          priceCurrency: "USD",
-          description: "Starting at $32 for 1 reply",
+          billingDuration: "P1M",
+          description: "$350/month with 100% money-back guarantee",
         },
       },
     ],
