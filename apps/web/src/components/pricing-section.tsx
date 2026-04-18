@@ -4,8 +4,18 @@ import { useState } from "react";
 import { CheckoutModal } from "./checkout-modal";
 import { AISearchLogos } from "./ai-logos";
 
+function currentMonth() {
+  return new Date().toLocaleString("en", { month: "long" });
+}
+
 export function PricingSection() {
   const [showModal, setShowModal] = useState(false);
+  const [discount, setDiscount] = useState(false);
+
+  const openModal = (withDiscount = false) => {
+    setDiscount(withDiscount);
+    setShowModal(true);
+  };
 
   return (
     <section id="pricing" className="py-16 md:py-24 px-4 md:px-6 bg-gray-50/50">
@@ -62,10 +72,10 @@ export function PricingSection() {
 
             {/* CTA */}
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => openModal(false)}
               className="w-full mt-8 bg-gray-900 text-white py-3.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-900/10"
             >
-              Get Started — $350/mo
+              Join {currentMonth()} cohort (1 seat remaining)
             </button>
 
             <p className="mt-3 text-xs text-gray-400 text-center">
@@ -144,7 +154,12 @@ export function PricingSection() {
         </div>
       </div>
 
-      {showModal && <CheckoutModal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <CheckoutModal
+          onClose={() => setShowModal(false)}
+          discount={discount}
+        />
+      )}
     </section>
   );
 }
