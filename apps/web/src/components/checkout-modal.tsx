@@ -198,11 +198,11 @@ export function CheckoutModal({
                 Your website
               </label>
               <input
-                type="url"
+                type="text"
                 required
                 value={brandUrl}
                 onChange={(e) => setBrandUrl(e.target.value)}
-                placeholder="https://yourbrand.com"
+                placeholder="yourbrand.com"
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
 
@@ -238,7 +238,7 @@ export function CheckoutModal({
                 </div>
                 <div className="flex items-center justify-between text-sm mt-2">
                   <span className="text-gray-500">Guarantee</span>
-                  <span className="font-medium text-emerald-600">100% money-back</span>
+                  <span className="font-medium text-orange-500">100% money-back</span>
                 </div>
                 {discount && (
                   <div className="flex items-center justify-between text-sm mt-2">

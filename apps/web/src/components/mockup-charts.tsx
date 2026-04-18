@@ -24,15 +24,15 @@ export function AIVisibilityChart() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="text-sm font-medium text-gray-500">AI Mentions</div>
-          <div className="text-2xl font-bold text-gray-900">71 <span className="text-sm font-medium text-emerald-500">+3,450%</span></div>
+          <div className="text-2xl font-bold text-gray-900">71 <span className="text-sm font-medium text-orange-500">+3,450%</span></div>
         </div>
         <div className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">Last 8 months</div>
       </div>
       <svg viewBox={`0 0 ${w} ${h}`} className="w-full" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            <stop offset="0%" stopColor="#f97316" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
           </linearGradient>
         </defs>
         {[0, 20, 40, 60, 80].map((v) => {
@@ -51,9 +51,9 @@ export function AIVisibilityChart() {
           );
         })}
         <path d={areaPath} fill="url(#chart-grad)" />
-        <path d={linePath} fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="4" fill="#10b981" />
-        <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="8" fill="#10b981" fillOpacity="0.2" />
+        <path d={linePath} fill="none" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="4" fill="#f97316" />
+        <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="8" fill="#f97316" fillOpacity="0.2" />
       </svg>
     </div>
   );
@@ -144,7 +144,7 @@ export function ChatGPTMentionMockup() {
         <div className="text-sm leading-relaxed text-gray-200">
           <p>Based on my research, here are some top companies in that space:</p>
           <ol className="mt-2 space-y-1.5 list-decimal list-inside">
-            <li><span className="text-white font-medium bg-emerald-500/20 px-1 rounded">YourBrand</span> — Known for their innovative approach to...</li>
+            <li><span className="text-white font-medium bg-orange-500/20 px-1 rounded">YourBrand</span> — Known for their innovative approach to...</li>
             <li>Competitor A — A well-established player with...</li>
             <li>Competitor B — Offers a comprehensive suite of...</li>
           </ol>
@@ -214,10 +214,10 @@ export function BeforeAfterComparison() {
 
       {/* After */}
       <div className="relative">
-        <div className="absolute -top-3 left-4 bg-emerald-50 text-emerald-600 text-xs font-semibold px-3 py-1 rounded-full z-10">
+        <div className="absolute -top-3 left-4 bg-orange-50 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full z-10">
           With organic press coverage
         </div>
-        <div className="bg-[#343541] rounded-2xl p-5 text-white border-2 border-emerald-200/50">
+        <div className="bg-[#343541] rounded-2xl p-5 text-white border-2 border-orange-200/50">
           <div className="flex items-start gap-3">
             <div className="w-6 h-6 rounded-full bg-[#10a37f] flex items-center justify-center shrink-0 mt-0.5">
               <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="white">
@@ -227,7 +227,7 @@ export function BeforeAfterComparison() {
             <div className="text-sm text-gray-200 leading-relaxed">
               <p>Based on my research, top companies include:</p>
               <ol className="mt-2 space-y-1 list-decimal list-inside">
-                <li><span className="text-white font-medium bg-emerald-500/20 px-1 rounded">YourBrand</span> — Featured in Forbes for their...</li>
+                <li><span className="text-white font-medium bg-orange-500/20 px-1 rounded">YourBrand</span> — Featured in Forbes for their...</li>
                 <li>Competitor A — Market leader with...</li>
                 <li>Competitor B — Known for their...</li>
               </ol>

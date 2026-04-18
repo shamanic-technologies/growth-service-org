@@ -15,11 +15,11 @@ export function Navbar({ bannerVisible, onApply }: { bannerVisible?: boolean; on
         <a href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
           <svg width="24" height="24" viewBox="0 0 32 32" className="shrink-0">
             <rect width="32" height="32" rx="8" fill="#111" />
-            <path d="M8 22L14 14L19 17L24 8" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path d="M20 8H24V12" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d="M8 22L14 14L19 17L24 8" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d="M20 8H24V12" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </svg>
           GrowthService
-          <span className="text-[10px] font-semibold uppercase tracking-wider bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-md leading-none">
+          <span className="text-[10px] font-semibold uppercase tracking-wider bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-md leading-none">
             beta
           </span>
         </a>

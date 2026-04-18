@@ -5,7 +5,7 @@ export function Footer() {
         <div>
           <div className="text-lg font-semibold flex items-center gap-2">
             GrowthService
-            <span className="text-[10px] font-semibold uppercase tracking-wider bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-md leading-none">
+            <span className="text-[10px] font-semibold uppercase tracking-wider bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-md leading-none">
               beta
             </span>
           </div>

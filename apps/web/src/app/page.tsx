@@ -116,7 +116,7 @@ export default function Home() {
               { value: "160", label: "Countries covered" },
             ].map((stat) => (
               <div key={stat.label}>
-                <div className={`text-2xl md:text-3xl font-bold ${stat.highlight ? "text-emerald-600" : "text-gray-900"}`}>
+                <div className={`text-2xl md:text-3xl font-bold ${stat.highlight ? "text-orange-500" : "text-gray-900"}`}>
                   {stat.value}
                 </div>
                 <div className="text-xs text-gray-500 mt-1 leading-snug">{stat.label}</div>
@@ -151,7 +151,7 @@ export default function Home() {
         <section className="py-16 md:py-24 px-4 md:px-6 bg-gray-900 text-white">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <div className="text-sm font-medium text-emerald-400 uppercase tracking-wider mb-3">
+              <div className="text-sm font-medium text-orange-400 uppercase tracking-wider mb-3">
                 Why organic press
               </div>
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
@@ -167,15 +167,15 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
-                <div className="text-4xl font-bold text-emerald-400">95%</div>
+                <div className="text-4xl font-bold text-orange-400">95%</div>
                 <div className="text-sm text-gray-400 mt-2">of links cited by AI are from <span className="text-white font-medium">non-paid</span> media coverage</div>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
-                <div className="text-4xl font-bold text-emerald-400">DR 70+</div>
+                <div className="text-4xl font-bold text-orange-400">DR 70+</div>
                 <div className="text-sm text-gray-400 mt-2"><span className="text-white font-medium">High-authority outlets</span> like Reuters & Forbes are prioritized by AI</div>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
-                <div className="text-4xl font-bold text-emerald-400">&lt; 12mo</div>
+                <div className="text-4xl font-bold text-orange-400">&lt; 12mo</div>
                 <div className="text-sm text-gray-400 mt-2">AI prioritizes content published <span className="text-white font-medium">within the last year</span></div>
               </div>
             </div>
@@ -257,10 +257,10 @@ export default function Home() {
                 },
               ].map((item) => (
                 <div key={item.step} className="relative">
-                  <div className="text-5xl font-bold text-emerald-200">{item.step}</div>
+                  <div className="text-5xl font-bold text-orange-200">{item.step}</div>
                   <h3 className="mt-2 text-lg font-semibold">{item.title}</h3>
                   <p className="mt-2 text-sm text-gray-500 leading-relaxed">{item.desc}</p>
-                  <div className="mt-3 inline-block text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
+                  <div className="mt-3 inline-block text-xs font-medium text-orange-500 bg-orange-50 px-2 py-1 rounded-md">
                     {item.detail}
                   </div>
                 </div>
@@ -331,7 +331,7 @@ function FinalCTA({ onApply }: { onApply: (email: string) => void }) {
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
           Get Recommended by AI.
           <br />
-          <span className="text-emerald-400">$350/mo. Guaranteed.</span>
+          <span className="text-orange-400">$350/mo. Guaranteed.</span>
         </h2>
         <p className="mt-4 text-gray-400">
           One organic press article per month in a DR50+ publication.
