@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { PricingSection } from "@/components/pricing-section";
@@ -66,6 +66,11 @@ const faqJsonLd = {
 
 export default function Home() {
   const [discountModal, setDiscountModal] = useState(false);
+  const [bannerVisible, setBannerVisible] = useState(false);
+
+  const handleBannerVisibility = useCallback((visible: boolean) => {
+    setBannerVisible(visible);
+  }, []);
 
   return (
     <>
@@ -73,8 +78,11 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <Navbar />
-      <UrgencyBanner onClaim={() => setDiscountModal(true)} />
+      <UrgencyBanner
+        onClaim={() => setDiscountModal(true)}
+        onVisibilityChange={handleBannerVisibility}
+      />
+      <Navbar bannerVisible={bannerVisible} />
       <main>
         <Hero />
 

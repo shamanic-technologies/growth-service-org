@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { getEndOfUTCDay, formatCountdown } from "./urgency-banner";
 
 type Step = "info" | "checkout";
 
@@ -16,9 +17,7 @@ export function CheckoutModal({
   const [brandUrl, setBrandUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const price = discount ? 175 : 350;
-  const priceLabel = discount ? "$175" : "$350";
+  const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem("gs_email");
@@ -26,6 +25,22 @@ export function CheckoutModal({
     const savedUrl = localStorage.getItem("gs_brand_url");
     if (savedUrl) setBrandUrl(savedUrl);
   }, []);
+
+  // Countdown timer for discount modal
+  useEffect(() => {
+    if (!discount) return;
+
+    const endOfDay = getEndOfUTCDay();
+
+    const tick = () => {
+      const remaining = endOfDay - Date.now();
+      setTimeLeft(remaining > 0 ? formatCountdown(remaining) : "00:00:00");
+    };
+
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [discount]);
 
   const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +89,7 @@ export function CheckoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center">
       <div
         className="absolute inset-0 bg-black/20 backdrop-blur-sm"
         onClick={onClose}
@@ -88,7 +103,7 @@ export function CheckoutModal({
               {discount ? (
                 <>
                   <span className="line-through text-gray-400 mr-1">$350</span>
-                  $175/first month
+                  $175/first month &middot; then $350/mo
                 </>
               ) : (
                 <>$350/month &middot; Cancel anytime</>
@@ -114,9 +129,17 @@ export function CheckoutModal({
 
         <div className="p-6">
           {discount && (
-            <div className="mb-4 p-3 bg-amber-50 text-amber-700 text-sm rounded-lg flex items-center gap-2">
-              <span className="font-bold text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">50% OFF</span>
-              First month at $175 — limited time offer
+            <div className="mb-4 p-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 text-amber-800 text-sm rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">50% OFF</span>
+                  <span>First month at $175</span>
+                </div>
+                <span className="font-mono text-xs bg-amber-200/50 px-2 py-1 rounded-md tabular-nums">
+                  {timeLeft}
+                </span>
+              </div>
+              <div className="text-xs text-amber-600 mt-1">Then $350/mo. Cancel anytime.</div>
             </div>
           )}
 
@@ -191,23 +214,31 @@ export function CheckoutModal({
                   <span className="text-gray-500">Guarantee</span>
                   <span className="font-medium text-emerald-600">100% money-back</span>
                 </div>
+                {discount && (
+                  <div className="flex items-center justify-between text-sm mt-2">
+                    <span className="text-gray-500">Coupon</span>
+                    <span className="font-medium text-amber-600">LAUNCH50 (50% off first month)</span>
+                  </div>
+                )}
                 <div className="border-t border-gray-200 mt-3 pt-3 flex items-center justify-between">
-                  <span className="font-medium">Total</span>
+                  <span className="font-medium">Today</span>
                   <span className="text-xl font-bold">
                     {discount ? (
                       <>
                         <span className="line-through text-gray-400 text-sm mr-1">$350</span>
                         $175
-                        <span className="text-sm text-gray-400 font-normal">/first mo</span>
                       </>
                     ) : (
-                      <>
-                        ${price}
-                        <span className="text-sm text-gray-400 font-normal">/mo</span>
-                      </>
+                      "$350"
                     )}
+                    <span className="text-sm text-gray-400 font-normal">/mo</span>
                   </span>
                 </div>
+                {discount && (
+                  <div className="text-xs text-gray-400 mt-1 text-right">
+                    Then $350/mo starting next month
+                  </div>
+                )}
               </div>
 
               <div className="mb-4 text-xs text-gray-400 space-y-1">
@@ -230,7 +261,9 @@ export function CheckoutModal({
               >
                 {loading
                   ? "Redirecting to payment..."
-                  : `Subscribe — ${priceLabel}/mo`}
+                  : discount
+                    ? "Subscribe — $175 first month"
+                    : "Subscribe — $350/mo"}
               </button>
 
               <p className="mt-3 text-xs text-gray-400 text-center">
