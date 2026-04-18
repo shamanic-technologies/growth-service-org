@@ -5,7 +5,7 @@ import { createOrder } from "@/lib/db";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, brand_url, discount } = body;
+    const { email, brand_url, discount, include_tracking } = body;
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       frequency: "monthly",
       brandUrl: brand_url,
       discount: !!discount,
+      includeTracking: !!include_tracking,
     });
 
     return NextResponse.json({
