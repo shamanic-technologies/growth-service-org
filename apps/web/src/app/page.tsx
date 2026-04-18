@@ -241,7 +241,7 @@ export default function Home() {
                 },
               ].map((item) => (
                 <div key={item.step} className="relative">
-                  <div className="text-5xl font-bold text-gray-300">{item.step}</div>
+                  <div className="text-5xl font-bold text-emerald-200">{item.step}</div>
                   <h3 className="mt-2 text-lg font-semibold">{item.title}</h3>
                   <p className="mt-2 text-sm text-gray-500 leading-relaxed">{item.desc}</p>
                   <div className="mt-3 inline-block text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
