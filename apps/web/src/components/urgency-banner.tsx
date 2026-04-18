@@ -94,12 +94,9 @@ export function UrgencyBanner({
     <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 to-orange-500 text-white">
       <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 text-sm flex-1 min-w-0">
-          <span className="shrink-0 font-bold text-xs bg-white/20 px-2 py-0.5 rounded-full">
-            $100 OFF
-          </span>
           <span className="truncate">
             <span className="font-semibold">Limited offer</span>
-            {" "}&mdash; First month at $250 (save $100)
+            {" "}&mdash; 🎉 First month at <s>$350</s> $250
           </span>
           <span className="shrink-0 font-mono text-xs bg-black/20 px-2 py-1 rounded-md tabular-nums">
             {timeLeft}
