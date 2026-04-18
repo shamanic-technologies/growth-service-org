@@ -56,7 +56,7 @@ export function PricingSection({ onApply }: { onApply?: (email: string) => void 
                 "Brief 15-min interview or Q&A (your only involvement)",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <svg className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                   <span className="text-sm text-gray-700">{item}</span>
@@ -106,7 +106,7 @@ export function PricingSection({ onApply }: { onApply?: (email: string) => void 
                   <th className="py-3 px-4 font-medium text-gray-400">PR Junior</th>
                   <th className="py-3 px-4 font-medium text-gray-400">PR Agency</th>
                   <th className="py-3 px-4 font-medium text-gray-400">Blog SEO tools</th>
-                  <th className="py-3 px-4 font-semibold text-gray-900 bg-emerald-50/50 rounded-t-lg">GrowthService</th>
+                  <th className="py-3 px-4 font-semibold text-gray-900 bg-orange-50/50 rounded-t-lg">GrowthService</th>
                 </tr>
               </thead>
               <tbody className="text-gray-600">
@@ -115,42 +115,42 @@ export function PricingSection({ onApply }: { onApply?: (email: string) => void 
                   <td className="py-3 px-4 text-center">$4,000/mo</td>
                   <td className="py-3 px-4 text-center">$10,000/mo</td>
                   <td className="py-3 px-4 text-center">$99/mo</td>
-                  <td className="py-3 px-4 text-center font-semibold bg-emerald-50/50">$350/mo</td>
+                  <td className="py-3 px-4 text-center font-semibold bg-orange-50/50">$350/mo</td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="py-3 pr-4 font-medium text-gray-700">Commitment</td>
                   <td className="py-3 px-4 text-center">Employment</td>
                   <td className="py-3 px-4 text-center">6-month retainer</td>
                   <td className="py-3 px-4 text-center">Monthly</td>
-                  <td className="py-3 px-4 text-center font-semibold bg-emerald-50/50">None</td>
+                  <td className="py-3 px-4 text-center font-semibold bg-orange-50/50">None</td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="py-3 pr-4 font-medium text-gray-700">Guarantee</td>
                   <td className="py-3 px-4 text-center">None</td>
                   <td className="py-3 px-4 text-center">None</td>
                   <td className="py-3 px-4 text-center">None</td>
-                  <td className="py-3 px-4 text-center font-semibold text-emerald-600 bg-emerald-50/50">100% refund</td>
+                  <td className="py-3 px-4 text-center font-semibold text-orange-500 bg-orange-50/50">100% refund</td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="py-3 pr-4 font-medium text-gray-700">Content type</td>
                   <td className="py-3 px-4 text-center">Varies</td>
                   <td className="py-3 px-4 text-center">Advertorials</td>
                   <td className="py-3 px-4 text-center">Blog posts</td>
-                  <td className="py-3 px-4 text-center font-semibold bg-emerald-50/50">Organic press</td>
+                  <td className="py-3 px-4 text-center font-semibold bg-orange-50/50">Organic press</td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="py-3 pr-4 font-medium text-gray-700">AI Search impact</td>
                   <td className="py-3 px-4 text-center">Low</td>
                   <td className="py-3 px-4 text-center">Medium</td>
                   <td className="py-3 px-4 text-center">Low</td>
-                  <td className="py-3 px-4 text-center font-semibold text-emerald-600 bg-emerald-50/50">High</td>
+                  <td className="py-3 px-4 text-center font-semibold text-orange-500 bg-orange-50/50">High</td>
                 </tr>
                 <tr>
                   <td className="py-3 pr-4 font-medium text-gray-700">Your effort</td>
                   <td className="py-3 px-4 text-center">Daily mgmt</td>
                   <td className="py-3 px-4 text-center">Weekly calls</td>
                   <td className="py-3 px-4 text-center">Setup + review</td>
-                  <td className="py-3 px-4 text-center font-semibold bg-emerald-50/50 rounded-b-lg">15 min/mo</td>
+                  <td className="py-3 px-4 text-center font-semibold bg-orange-50/50 rounded-b-lg">15 min/mo</td>
                 </tr>
               </tbody>
             </table>
