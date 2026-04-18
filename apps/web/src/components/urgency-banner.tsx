@@ -10,15 +10,14 @@ function currentMonth() {
   return new Date().toLocaleString("en", { month: "long" });
 }
 
-function getEndOfUTCDay(): number {
+export function getEndOfUTCDay(): number {
   const now = new Date();
-  const endOfDay = new Date(
+  return new Date(
     Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)
-  );
-  return endOfDay.getTime();
+  ).getTime();
 }
 
-function formatCountdown(ms: number): string {
+export function formatCountdown(ms: number): string {
   if (ms <= 0) return "00:00:00";
   const h = Math.floor(ms / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
@@ -32,18 +31,15 @@ function shouldShowBanner(): boolean {
   const firstSeen = localStorage.getItem(STORAGE_KEY_FIRST_SEEN);
   const dismissedAt = localStorage.getItem(STORAGE_KEY_DISMISSED);
 
-  // First visit ever
   if (!firstSeen) {
     localStorage.setItem(STORAGE_KEY_FIRST_SEEN, String(Date.now()));
     return true;
   }
 
-  // If dismissed, check if 3 days have passed
   if (dismissedAt) {
     const elapsed = Date.now() - Number(dismissedAt);
     const reappearMs = REAPPEAR_DAYS * 24 * 60 * 60 * 1000;
     if (elapsed < reappearMs) return false;
-    // 3 days passed — show again
     return true;
   }
 
@@ -52,15 +48,20 @@ function shouldShowBanner(): boolean {
 
 export function UrgencyBanner({
   onClaim,
+  onVisibilityChange,
 }: {
   onClaim: () => void;
+  onVisibilityChange?: (visible: boolean) => void;
 }) {
   const [visible, setVisible] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
-    if (!shouldShowBanner()) return;
-    setVisible(true);
+    const show = shouldShowBanner();
+    setVisible(show);
+    onVisibilityChange?.(show);
+
+    if (!show) return;
 
     const endOfDay = getEndOfUTCDay();
 
@@ -76,22 +77,19 @@ export function UrgencyBanner({
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [onVisibilityChange]);
 
   const handleDismiss = () => {
     localStorage.setItem(STORAGE_KEY_DISMISSED, String(Date.now()));
     setVisible(false);
-  };
-
-  const handleClaim = () => {
-    onClaim();
+    onVisibilityChange?.(false);
   };
 
   if (!visible) return null;
 
   return (
-    <div className="fixed top-14 left-0 right-0 z-40 bg-gradient-to-r from-amber-500 to-orange-500 text-white">
-      <div className="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
+    <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+      <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 text-sm flex-1 min-w-0">
           <span className="shrink-0 font-bold text-xs bg-white/20 px-2 py-0.5 rounded-full">
             50% OFF
@@ -106,7 +104,7 @@ export function UrgencyBanner({
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <button
-            onClick={handleClaim}
+            onClick={onClaim}
             className="bg-white text-orange-600 font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-orange-50 transition"
           >
             Claim Offer

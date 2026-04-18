@@ -6,11 +6,15 @@ function currentMonth() {
   return new Date().toLocaleString("en", { month: "long" });
 }
 
-export function Navbar() {
+export function Navbar({ bannerVisible }: { bannerVisible?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+    <nav
+      className={`fixed left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 transition-[top] duration-200 ${
+        bannerVisible ? "top-[38px]" : "top-0"
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
           <svg width="24" height="24" viewBox="0 0 32 32" className="shrink-0">

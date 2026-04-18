@@ -11,33 +11,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const amountCents = discount ? 17500 : 35000;
-    const budgetUsd = discount ? 175 : 350;
-    const serviceName = discount
-      ? "AI Search Visibility — First Month (50% off)"
-      : "AI Search Visibility — Monthly";
-
-    // Create order record
+    // Always create the subscription at $350/mo — discount is applied via Stripe coupon
     const order = await createOrder({
       email,
       service: "ai_search_visibility",
       quantity: 1,
       frequency: "monthly",
-      amountCents,
-      budgetUsd,
+      amountCents: 35000,
+      budgetUsd: 350,
       brandUrl: brand_url,
     });
 
-    // Create Stripe checkout session
     const checkoutUrl = await createCheckoutSession({
       orderId: order.id,
       serviceId: "pr_hot_leads",
-      serviceName,
+      serviceName: "AI Search Visibility — Monthly",
       quantity: 1,
       customerEmail: email,
-      amountCents,
+      amountCents: 35000,
       frequency: "monthly",
       brandUrl: brand_url,
+      discount: !!discount,
     });
 
     return NextResponse.json({
