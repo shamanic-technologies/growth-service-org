@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import posthog from "posthog-js";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { PricingSection } from "@/components/pricing-section";
@@ -66,11 +67,26 @@ export default function Home() {
   const [prefillEmail, setPrefillEmail] = useState("");
   const [bannerVisible, setBannerVisible] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_complete");
+    if (orderId) {
+      posthog.capture("order_completed", {
+        order_id: orderId,
+        service: params.get("service"),
+      });
+    }
+    if (params.get("canceled") === "true") {
+      posthog.capture("checkout_canceled");
+    }
+  }, []);
+
   const handleBannerVisibility = useCallback((visible: boolean) => {
     setBannerVisible(visible);
   }, []);
 
-  const openModal = (email: string, discount = false) => {
+  const openModal = (email: string, discount = false, source = "unknown") => {
+    posthog.capture("cta_clicked", { source, discount });
     setPrefillEmail(email);
     setModalDiscount(discount);
     setModalOpen(true);
@@ -83,12 +99,12 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <UrgencyBanner
-        onClaim={() => openModal("", true)}
+        onClaim={() => openModal("", true, "urgency_banner")}
         onVisibilityChange={handleBannerVisibility}
       />
-      <Navbar bannerVisible={bannerVisible} onApply={(email) => openModal(email)} />
+      <Navbar bannerVisible={bannerVisible} onApply={(email) => openModal(email, false, "navbar")} />
       <main>
-        <Hero onApply={(email) => openModal(email)} />
+        <Hero onApply={(email) => openModal(email, false, "hero")} />
 
         {/* Stats bar */}
         <section className="py-8 px-4 md:px-6 border-y border-gray-100 bg-white">
@@ -253,7 +269,7 @@ export default function Home() {
 
             <div className="mt-12 text-center">
               <button
-                onClick={() => openModal("")}
+                onClick={() => openModal("", false, "how_it_works")}
                 className="bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition"
               >
                 Apply Now
@@ -262,7 +278,7 @@ export default function Home() {
           </div>
         </section>
 
-        <PricingSection onApply={(email) => openModal(email)} />
+        <PricingSection onApply={(email) => openModal(email, false, "pricing")} />
 
         {/* FAQ */}
         <section id="faq" className="py-16 md:py-24 px-4 md:px-6">
@@ -286,7 +302,7 @@ export default function Home() {
         </section>
 
         {/* Final CTA */}
-        <FinalCTA onApply={(email) => openModal(email)} />
+        <FinalCTA onApply={(email) => openModal(email, false, "final_cta")} />
       </main>
       <Footer />
 

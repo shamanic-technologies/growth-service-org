@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import posthog from "posthog-js";
 import { getEndOfUTCDay, formatCountdown } from "./urgency-banner";
 
 type Step = "info" | "checkout";
@@ -23,13 +24,14 @@ export function CheckoutModal({
   const [includeTracking, setIncludeTracking] = useState(true);
 
   useEffect(() => {
+    posthog.capture("modal_opened", { discount: !!discount });
     if (!initialEmail) {
       const saved = localStorage.getItem("gs_email");
       if (saved) setEmail(saved);
     }
     const savedUrl = localStorage.getItem("gs_brand_url");
     if (savedUrl) setBrandUrl(savedUrl);
-  }, [initialEmail]);
+  }, [initialEmail, discount]);
 
   // Countdown timer for discount modal
   useEffect(() => {
@@ -66,6 +68,8 @@ export function CheckoutModal({
       // Non-blocking
     }
 
+    posthog.capture("lead_submitted", { email, brand_url: brandUrl, discount: !!discount });
+    posthog.identify(email, { email, brand_url: brandUrl });
     setLoading(false);
     setStep("checkout");
   };
@@ -91,6 +95,13 @@ export function CheckoutModal({
         setLoading(false);
         return;
       }
+      posthog.capture("checkout_started", {
+        email,
+        brand_url: brandUrl,
+        discount: !!discount,
+        include_tracking: includeTracking,
+        total_cents: todayTotal * 100,
+      });
       window.location.href = data.checkout_url;
     } catch {
       setError("Network error. Please try again.");
@@ -242,7 +253,10 @@ export function CheckoutModal({
                     <input
                       type="checkbox"
                       checked={includeTracking}
-                      onChange={(e) => setIncludeTracking(e.target.checked)}
+                      onChange={(e) => {
+                        setIncludeTracking(e.target.checked);
+                        posthog.capture("tracking_addon_toggled", { checked: e.target.checked });
+                      }}
                       className="mt-0.5 w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
                     />
                     <div className="flex-1">
