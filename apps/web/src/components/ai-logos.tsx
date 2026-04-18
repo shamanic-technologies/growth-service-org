@@ -20,7 +20,7 @@ export function GoogleLogo({ className = "w-6 h-6" }: { className?: string }) {
 export function PerplexityLogo({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
-      <path d="M12 1L4 5v6.5L1 13v5l3 2h4l4 3 4-3h4l3-2v-5l-3-1.5V5l-8-4zm-1 2.24v4.51L6.5 5.5 11 3.24zM13 3.24l4.5 2.26L13 7.75V3.24zM5 6.38l5 2.5v5.24l-5-2.5V6.38zm14 0v5.24l-5 2.5V8.88l5-2.5zM3 14.12l3 1.5v3.26l-3-1.88v-2.88zm18 0v2.88l-3 1.88v-3.26l3-1.5zM8 16.38v3.12l4 3v-4.62l-4-1.5zm8 0l-4 1.5V22l4-3v-3.12z"/>
+      <path d="M12.16 0L4 5.6v5.92L0 14.08v6.4l4 2.88h4l4 2.64 4-2.64h4l4-2.88v-6.4l-4-2.56V5.6L12.16 0zM11 2.88v4.48L7.04 5.44 11 2.88zM13 2.88l3.96 2.56L13 7.36V2.88zM6 7.04l5 3.2v5.44l-5-3.2V7.04zm12 0v5.44l-5 3.2V10.24l5-3.2zM2 15.2l3 1.92v3.52l-3-2.16V15.2zm20 0v3.28l-3 2.16v-3.52l3-1.92zM7 17.76v3.36L11 24v-4.4l-4-1.84zm10 0l-4 1.84V24l4-2.88v-3.36z"/>
     </svg>
   );
 }
@@ -28,7 +28,8 @@ export function PerplexityLogo({ className = "w-6 h-6" }: { className?: string }
 export function ClaudeLogo({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
-      <path d="M16.98 2H7.02C4.243 2 2 4.243 2 7.02v9.96C2 19.757 4.243 22 7.02 22h9.96C19.757 22 22 19.757 22 16.98V7.02C22 4.243 19.757 2 16.98 2zM15.5 16.5h-2.25l-1.5-3h-1.5v3H8V7.5h4.25c1.795 0 3.25 1.176 3.25 2.75 0 1.173-.763 2.165-1.85 2.565l1.85 3.685zm-3.25-5.25H10.5v2.25h1.75c.69 0 1.25-.504 1.25-1.125S12.94 11.25 12.25 11.25z"/>
+      <path d="M15.31 3.67l-4.06 7.06-1.67-2.74L6.01 14.2h3.45l1.79 2.93 4.06-7.06 1.68 2.73 3.56-6.2h-3.44L15.31 3.67z"/>
+      <path d="M4.25 17.07h3.36l1.79 2.93L15.31 10.6l1.68 2.73L20.55 7h-3.44l-1.8 3.07-1.68-2.73-5.91 9.93-1.67-2.73L4.25 17.07z" opacity="0.6"/>
     </svg>
   );
 }
@@ -51,7 +52,7 @@ export function GeminiLogo({ className = "w-6 h-6" }: { className?: string }) {
 export function CopilotLogo({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
-      <path d="M12 2C6.477 2 2 6.477 2 12c0 3.286 1.583 6.203 4.028 8.025C6.01 20.017 6 20.008 6 20v-2.5c0-1.5 1-3 2.5-3.5-1-.5-2-1.5-2-3 0-2 1.5-3.5 3.5-3.5h4c2 0 3.5 1.5 3.5 3.5 0 1.5-1 2.5-2 3 1.5.5 2.5 2 2.5 3.5V20c0 .008-.01.017-.028.025C20.417 18.203 22 15.286 22 12c0-5.523-4.477-10-10-10z"/>
+      <path d="M12 2a7 7 0 0 0-7 7v1.07A4.5 4.5 0 0 0 3 14.5V17a4 4 0 0 0 4 4h10a4 4 0 0 0 4-4v-2.5a4.5 4.5 0 0 0-2-3.43V9a7 7 0 0 0-7-7zm-4.5 9.5V9a4.5 4.5 0 1 1 9 0v2.5a2 2 0 0 1 2 2V17a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 17v-3.5a2 2 0 0 1 2-2zm2 3a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zm5 0a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5z"/>
     </svg>
   );
 }
@@ -103,8 +104,8 @@ export function PublicationLogos() {
 
   return (
     <div className="overflow-hidden relative">
-      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10" />
+      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-900 to-transparent z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-900 to-transparent z-10" />
       <div className="flex animate-marquee">
         {[...publications, ...publications].map((pub, i) => (
           <div
@@ -118,7 +119,7 @@ export function PublicationLogos() {
               className="w-6 h-6 rounded"
               loading="lazy"
             />
-            <span className="text-sm text-gray-500 font-medium whitespace-nowrap">
+            <span className="text-sm text-gray-400 font-medium whitespace-nowrap">
               {pub.name}
             </span>
           </div>

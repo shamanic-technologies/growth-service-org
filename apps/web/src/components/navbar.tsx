@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+function currentMonth() {
+  return new Date().toLocaleString("en", { month: "long" });
+}
+
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -15,6 +19,9 @@ export function Navbar() {
             <path d="M20 8H24V12" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </svg>
           GrowthService
+          <span className="text-[10px] font-semibold uppercase tracking-wider bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-md leading-none">
+            beta
+          </span>
         </a>
 
         <div className="hidden md:flex items-center gap-8 text-sm text-gray-600">
@@ -34,7 +41,7 @@ export function Navbar() {
             href="#pricing"
             className="bg-gray-900 text-white px-4 py-1.5 rounded-full text-sm hover:bg-gray-800 transition"
           >
-            Get Started
+            Join {currentMonth()} cohort
           </a>
         </div>
 
