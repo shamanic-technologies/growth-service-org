@@ -1,20 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { CheckoutModal } from "./checkout-modal";
 import { AISearchLogos } from "./ai-logos";
 
-function currentMonth() {
-  return new Date().toLocaleString("en", { month: "long" });
-}
+export function PricingSection({ onApply }: { onApply?: (email: string) => void }) {
+  const [email, setEmail] = useState("");
 
-export function PricingSection() {
-  const [showModal, setShowModal] = useState(false);
-  const [discount, setDiscount] = useState(false);
-
-  const openModal = (withDiscount = false) => {
-    setDiscount(withDiscount);
-    setShowModal(true);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onApply?.(email);
   };
 
   return (
@@ -70,13 +64,23 @@ export function PricingSection() {
               ))}
             </div>
 
-            {/* CTA */}
-            <button
-              onClick={() => openModal(false)}
-              className="w-full mt-8 bg-gray-900 text-white py-3.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-900/10"
-            >
-              Join {currentMonth()} cohort (1 seat remaining)
-            </button>
+            {/* CTA with email */}
+            <form onSubmit={handleSubmit} className="mt-8 space-y-3">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@company.com"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              />
+              <button
+                type="submit"
+                className="w-full bg-gray-900 text-white py-3.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-900/10"
+              >
+                Apply Now
+              </button>
+            </form>
 
             <p className="mt-3 text-xs text-gray-400 text-center">
               Secure payment via Stripe
@@ -153,13 +157,6 @@ export function PricingSection() {
           </div>
         </div>
       </div>
-
-      {showModal && (
-        <CheckoutModal
-          onClose={() => setShowModal(false)}
-          discount={discount}
-        />
-      )}
     </section>
   );
 }

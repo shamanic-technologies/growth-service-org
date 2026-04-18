@@ -1,12 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { AISearchLogos } from "./ai-logos";
 
-function currentMonth() {
-  return new Date().toLocaleString("en", { month: "long" });
-}
+export function Hero({ onApply }: { onApply?: (email: string) => void }) {
+  const [email, setEmail] = useState("");
 
-export function Hero() {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onApply?.(email);
+  };
+
   return (
     <section className="pt-28 md:pt-36 pb-16 md:pb-24 px-4 md:px-6 relative overflow-hidden">
       {/* Background gradient */}
@@ -33,16 +37,28 @@ export function Hero() {
           One organic press article per month. $350/mo. Cancel anytime.
         </p>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <a
-            href="#pricing"
-            className="bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-900/10"
+        {/* Email + Apply CTA */}
+        <form onSubmit={handleSubmit} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@company.com"
+            className="w-full sm:flex-1 border border-gray-200 rounded-full px-5 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+          />
+          <button
+            type="submit"
+            className="w-full sm:w-auto bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-900/10 shrink-0"
           >
-            Join {currentMonth()} cohort (1 seat remaining)
-          </a>
+            Apply Now
+          </button>
+        </form>
+
+        <div className="mt-3 flex justify-center gap-4">
           <a
             href="#how-it-works"
-            className="border border-gray-200 text-gray-700 px-8 py-3.5 rounded-full text-sm font-medium hover:border-gray-300 transition"
+            className="text-sm text-gray-500 hover:text-gray-700 transition underline underline-offset-2"
           >
             How It Works
           </a>

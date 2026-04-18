@@ -1,7 +1,7 @@
 const EMAIL_SENDING_URL =
   process.env.EMAIL_SENDING_SERVICE_URL || "https://email-sending.mcpfactory.org";
 const EMAIL_SENDING_API_KEY = process.env.EMAIL_SENDING_SERVICE_API_KEY || "";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@growthservice.org";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "kevin@growthservice.org";
 
 export async function sendTransactionalEmail({
   to,
