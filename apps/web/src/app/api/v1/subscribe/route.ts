@@ -5,11 +5,17 @@ import { createOrder } from "@/lib/db";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, brand_url } = body;
+    const { email, brand_url, discount } = body;
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
+
+    const amountCents = discount ? 17500 : 35000;
+    const budgetUsd = discount ? 175 : 350;
+    const serviceName = discount
+      ? "AI Search Visibility — First Month (50% off)"
+      : "AI Search Visibility — Monthly";
 
     // Create order record
     const order = await createOrder({
@@ -17,19 +23,19 @@ export async function POST(req: NextRequest) {
       service: "ai_search_visibility",
       quantity: 1,
       frequency: "monthly",
-      amountCents: 35000,
-      budgetUsd: 350,
+      amountCents,
+      budgetUsd,
       brandUrl: brand_url,
     });
 
-    // Create Stripe checkout session for $350/month subscription
+    // Create Stripe checkout session
     const checkoutUrl = await createCheckoutSession({
       orderId: order.id,
       serviceId: "pr_hot_leads",
-      serviceName: "AI Search Visibility — Monthly",
+      serviceName,
       quantity: 1,
       customerEmail: email,
-      amountCents: 35000,
+      amountCents,
       frequency: "monthly",
       brandUrl: brand_url,
     });
