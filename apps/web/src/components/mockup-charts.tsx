@@ -1,7 +1,6 @@
 "use client";
 
 export function AIVisibilityChart() {
-  // Mockup: line chart showing AI mentions growing over months
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
   const values = [2, 5, 8, 14, 23, 38, 52, 71];
   const maxVal = 80;
@@ -36,7 +35,6 @@ export function AIVisibilityChart() {
             <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
           </linearGradient>
         </defs>
-        {/* Grid lines */}
         {[0, 20, 40, 60, 80].map((v) => {
           const y = h - padY - (v / maxVal) * chartH;
           return (
@@ -46,18 +44,14 @@ export function AIVisibilityChart() {
             </g>
           );
         })}
-        {/* X axis labels */}
         {months.map((m, i) => {
           const x = padX + (i / (months.length - 1)) * chartW;
           return (
             <text key={m} x={x} y={h - 4} textAnchor="middle" fontSize="10" fill="#9ca3af">{m}</text>
           );
         })}
-        {/* Area */}
         <path d={areaPath} fill="url(#chart-grad)" />
-        {/* Line */}
         <path d={linePath} fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        {/* End dot */}
         <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="4" fill="#10b981" />
         <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="8" fill="#10b981" fillOpacity="0.2" />
       </svg>
@@ -66,7 +60,6 @@ export function AIVisibilityChart() {
 }
 
 export function DomainRatingChart() {
-  // Mockup: bar chart of DR going up
   const data = [
     { label: "Before", value: 15, color: "#d1d5db" },
     { label: "Month 1", value: 22, color: "#93c5fd" },
@@ -77,6 +70,14 @@ export function DomainRatingChart() {
   ];
   const maxVal = 80;
 
+  // Use SVG for reliable rendering
+  const barW = 40;
+  const gap = 12;
+  const totalW = data.length * barW + (data.length - 1) * gap;
+  const chartH = 120;
+  const labelH = 36; // space for top value + bottom label
+  const svgH = chartH + labelH;
+
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
@@ -86,21 +87,47 @@ export function DomainRatingChart() {
         </div>
         <div className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">Ahrefs verified</div>
       </div>
-      <div className="flex items-end gap-2 h-32">
-        {data.map((d) => (
-          <div key={d.label} className="flex-1 flex flex-col items-center gap-1">
-            <div className="text-xs font-medium text-gray-600">{d.value}</div>
-            <div
-              className="w-full rounded-t-md transition-all duration-700"
-              style={{
-                height: `${(d.value / maxVal) * 100}%`,
-                backgroundColor: d.color,
-              }}
-            />
-            <div className="text-[10px] text-gray-400 whitespace-nowrap">{d.label}</div>
-          </div>
-        ))}
-      </div>
+      <svg viewBox={`0 0 ${totalW} ${svgH}`} className="w-full" preserveAspectRatio="xMidYMid meet">
+        {data.map((d, i) => {
+          const x = i * (barW + gap);
+          const barH = (d.value / maxVal) * chartH;
+          const barY = chartH - barH + 14; // 14px offset for top label
+          return (
+            <g key={d.label}>
+              {/* Value label */}
+              <text
+                x={x + barW / 2}
+                y={barY - 4}
+                textAnchor="middle"
+                fontSize="11"
+                fontWeight="600"
+                fill="#4b5563"
+              >
+                {d.value}
+              </text>
+              {/* Bar */}
+              <rect
+                x={x}
+                y={barY}
+                width={barW}
+                height={barH}
+                rx={4}
+                fill={d.color}
+              />
+              {/* Label */}
+              <text
+                x={x + barW / 2}
+                y={svgH - 2}
+                textAnchor="middle"
+                fontSize="9"
+                fill="#9ca3af"
+              >
+                {d.label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 }

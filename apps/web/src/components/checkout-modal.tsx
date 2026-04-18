@@ -4,12 +4,21 @@ import { useState, useEffect } from "react";
 
 type Step = "info" | "checkout";
 
-export function CheckoutModal({ onClose }: { onClose: () => void }) {
+export function CheckoutModal({
+  onClose,
+  discount,
+}: {
+  onClose: () => void;
+  discount?: boolean;
+}) {
   const [step, setStep] = useState<Step>("info");
   const [email, setEmail] = useState("");
   const [brandUrl, setBrandUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const price = discount ? 175 : 350;
+  const priceLabel = discount ? "$175" : "$350";
 
   useEffect(() => {
     const saved = localStorage.getItem("gs_email");
@@ -28,14 +37,13 @@ export function CheckoutModal({ onClose }: { onClose: () => void }) {
     if (brandUrl) localStorage.setItem("gs_brand_url", brandUrl);
 
     try {
-      // Capture lead + send notification
       await fetch("/api/v1/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, brand_url: brandUrl }),
       });
     } catch {
-      // Non-blocking — continue even if lead capture fails
+      // Non-blocking
     }
 
     setLoading(false);
@@ -50,7 +58,7 @@ export function CheckoutModal({ onClose }: { onClose: () => void }) {
       const res = await fetch("/api/v1/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, brand_url: brandUrl }),
+        body: JSON.stringify({ email, brand_url: brandUrl, discount: !!discount }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -76,7 +84,16 @@ export function CheckoutModal({ onClose }: { onClose: () => void }) {
         <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <div>
             <div className="text-sm text-gray-500">AI Search Visibility</div>
-            <div className="font-semibold">$350/month &middot; Cancel anytime</div>
+            <div className="font-semibold">
+              {discount ? (
+                <>
+                  <span className="line-through text-gray-400 mr-1">$350</span>
+                  $175/first month
+                </>
+              ) : (
+                <>$350/month &middot; Cancel anytime</>
+              )}
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -96,6 +113,13 @@ export function CheckoutModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="p-6">
+          {discount && (
+            <div className="mb-4 p-3 bg-amber-50 text-amber-700 text-sm rounded-lg flex items-center gap-2">
+              <span className="font-bold text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">50% OFF</span>
+              First month at $175 — limited time offer
+            </div>
+          )}
+
           {error && (
             <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg">
               {error}
@@ -169,7 +193,20 @@ export function CheckoutModal({ onClose }: { onClose: () => void }) {
                 </div>
                 <div className="border-t border-gray-200 mt-3 pt-3 flex items-center justify-between">
                   <span className="font-medium">Total</span>
-                  <span className="text-xl font-bold">$350<span className="text-sm text-gray-400 font-normal">/mo</span></span>
+                  <span className="text-xl font-bold">
+                    {discount ? (
+                      <>
+                        <span className="line-through text-gray-400 text-sm mr-1">$350</span>
+                        $175
+                        <span className="text-sm text-gray-400 font-normal">/first mo</span>
+                      </>
+                    ) : (
+                      <>
+                        ${price}
+                        <span className="text-sm text-gray-400 font-normal">/mo</span>
+                      </>
+                    )}
+                  </span>
                 </div>
               </div>
 
@@ -191,7 +228,9 @@ export function CheckoutModal({ onClose }: { onClose: () => void }) {
                 disabled={loading}
                 className="w-full bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50"
               >
-                {loading ? "Redirecting to payment..." : "Subscribe — $350/mo"}
+                {loading
+                  ? "Redirecting to payment..."
+                  : `Subscribe — ${priceLabel}/mo`}
               </button>
 
               <p className="mt-3 text-xs text-gray-400 text-center">

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { PricingSection } from "@/components/pricing-section";
@@ -10,6 +13,12 @@ import {
   ChatGPTMentionMockup,
   GoogleAIOverviewMockup,
 } from "@/components/mockup-charts";
+import { UrgencyBanner } from "@/components/urgency-banner";
+import { CheckoutModal } from "@/components/checkout-modal";
+
+function currentMonth() {
+  return new Date().toLocaleString("en", { month: "long" });
+}
 
 const faqItems = [
   {
@@ -56,6 +65,8 @@ const faqJsonLd = {
 };
 
 export default function Home() {
+  const [discountModal, setDiscountModal] = useState(false);
+
   return (
     <>
       <script
@@ -63,6 +74,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <Navbar />
+      <UrgencyBanner onClaim={() => setDiscountModal(true)} />
       <main>
         <Hero />
 
@@ -232,7 +244,7 @@ export default function Home() {
                 href="#pricing"
                 className="inline-block bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition"
               >
-                Get Started — $350/mo
+                Join {currentMonth()} cohort (1 seat remaining)
               </a>
             </div>
           </div>
@@ -277,7 +289,7 @@ export default function Home() {
               href="#pricing"
               className="inline-block mt-8 bg-white text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-100 transition"
             >
-              Start Now
+              Join {currentMonth()} cohort (1 seat remaining)
             </a>
             <div className="mt-8">
               <AISearchLogos size="sm" />
@@ -286,6 +298,13 @@ export default function Home() {
         </section>
       </main>
       <Footer />
+
+      {discountModal && (
+        <CheckoutModal
+          onClose={() => setDiscountModal(false)}
+          discount
+        />
+      )}
     </>
   );
 }

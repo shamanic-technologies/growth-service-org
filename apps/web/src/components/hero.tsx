@@ -1,4 +1,10 @@
+"use client";
+
 import { AISearchLogos } from "./ai-logos";
+
+function currentMonth() {
+  return new Date().toLocaleString("en", { month: "long" });
+}
 
 export function Hero() {
   return (
@@ -32,7 +38,7 @@ export function Hero() {
             href="#pricing"
             className="bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-900/10"
           >
-            Start for $350/mo
+            Join {currentMonth()} cohort (1 seat remaining)
           </a>
           <a
             href="#how-it-works"
