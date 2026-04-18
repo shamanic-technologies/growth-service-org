@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 
-function currentMonth() {
-  return new Date().toLocaleString("en", { month: "long" });
-}
-
-export function Navbar({ bannerVisible }: { bannerVisible?: boolean }) {
+export function Navbar({ bannerVisible, onApply }: { bannerVisible?: boolean; onApply?: (email: string) => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -41,12 +37,12 @@ export function Navbar({ bannerVisible }: { bannerVisible?: boolean }) {
           <a href="#faq" className="hover:text-gray-900 transition">
             FAQ
           </a>
-          <a
-            href="#pricing"
+          <button
+            onClick={() => onApply?.("")}
             className="bg-gray-900 text-white px-4 py-1.5 rounded-full text-sm hover:bg-gray-800 transition"
           >
-            Join {currentMonth()} cohort
-          </a>
+            Apply
+          </button>
         </div>
 
         <button
@@ -85,6 +81,12 @@ export function Navbar({ bannerVisible }: { bannerVisible?: boolean }) {
           <a href="#faq" onClick={() => setMenuOpen(false)}>
             FAQ
           </a>
+          <button
+            onClick={() => { setMenuOpen(false); onApply?.(""); }}
+            className="text-left font-medium text-gray-900"
+          >
+            Apply
+          </button>
         </div>
       )}
     </nav>

@@ -95,8 +95,8 @@ export function UrgencyBanner({
             50% OFF
           </span>
           <span className="truncate">
-            <span className="font-semibold">Join the {currentMonth()} cohort</span>
-            {" "}&mdash; First month at $175 (1 seat remaining)
+            <span className="font-semibold">Limited offer</span>
+            {" "}&mdash; First month at $175 (50% off)
           </span>
           <span className="shrink-0 font-mono text-xs bg-black/20 px-2 py-1 rounded-md tabular-nums">
             {timeLeft}

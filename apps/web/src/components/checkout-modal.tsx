@@ -8,23 +8,27 @@ type Step = "info" | "checkout";
 export function CheckoutModal({
   onClose,
   discount,
+  initialEmail,
 }: {
   onClose: () => void;
   discount?: boolean;
+  initialEmail?: string;
 }) {
   const [step, setStep] = useState<Step>("info");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(initialEmail || "");
   const [brandUrl, setBrandUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
-    const saved = localStorage.getItem("gs_email");
-    if (saved) setEmail(saved);
+    if (!initialEmail) {
+      const saved = localStorage.getItem("gs_email");
+      if (saved) setEmail(saved);
+    }
     const savedUrl = localStorage.getItem("gs_brand_url");
     if (savedUrl) setBrandUrl(savedUrl);
-  }, []);
+  }, [initialEmail]);
 
   // Countdown timer for discount modal
   useEffect(() => {

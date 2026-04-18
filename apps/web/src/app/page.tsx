@@ -16,10 +16,6 @@ import {
 import { UrgencyBanner } from "@/components/urgency-banner";
 import { CheckoutModal } from "@/components/checkout-modal";
 
-function currentMonth() {
-  return new Date().toLocaleString("en", { month: "long" });
-}
-
 const faqItems = [
   {
     q: "How does this improve my AI Search visibility?",
@@ -65,12 +61,20 @@ const faqJsonLd = {
 };
 
 export default function Home() {
-  const [discountModal, setDiscountModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalDiscount, setModalDiscount] = useState(false);
+  const [prefillEmail, setPrefillEmail] = useState("");
   const [bannerVisible, setBannerVisible] = useState(false);
 
   const handleBannerVisibility = useCallback((visible: boolean) => {
     setBannerVisible(visible);
   }, []);
+
+  const openModal = (email: string, discount = false) => {
+    setPrefillEmail(email);
+    setModalDiscount(discount);
+    setModalOpen(true);
+  };
 
   return (
     <>
@@ -79,12 +83,12 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <UrgencyBanner
-        onClaim={() => setDiscountModal(true)}
+        onClaim={() => openModal("", true)}
         onVisibilityChange={handleBannerVisibility}
       />
-      <Navbar bannerVisible={bannerVisible} />
+      <Navbar bannerVisible={bannerVisible} onApply={(email) => openModal(email)} />
       <main>
-        <Hero />
+        <Hero onApply={(email) => openModal(email)} />
 
         {/* Stats bar */}
         <section className="py-8 px-4 md:px-6 border-y border-gray-100 bg-white">
@@ -248,17 +252,17 @@ export default function Home() {
             </div>
 
             <div className="mt-12 text-center">
-              <a
-                href="#pricing"
-                className="inline-block bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition"
+              <button
+                onClick={() => openModal("")}
+                className="bg-gray-900 text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-800 transition"
               >
-                Join {currentMonth()} cohort (1 seat remaining)
-              </a>
+                Apply Now
+              </button>
             </div>
           </div>
         </section>
 
-        <PricingSection />
+        <PricingSection onApply={(email) => openModal(email)} />
 
         {/* FAQ */}
         <section id="faq" className="py-16 md:py-24 px-4 md:px-6">
@@ -282,37 +286,61 @@ export default function Home() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-16 md:py-24 px-4 md:px-6 bg-gray-900 text-white text-center">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-              Get Recommended by AI.
-              <br />
-              <span className="text-emerald-400">$350/mo. Guaranteed.</span>
-            </h2>
-            <p className="mt-4 text-gray-400">
-              One organic press article per month in a DR50+ publication.
-              100% money-back guarantee if we don&apos;t deliver.
-            </p>
-            <a
-              href="#pricing"
-              className="inline-block mt-8 bg-white text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-100 transition"
-            >
-              Join {currentMonth()} cohort (1 seat remaining)
-            </a>
-            <div className="mt-8">
-              <AISearchLogos size="sm" />
-            </div>
-          </div>
-        </section>
+        <FinalCTA onApply={(email) => openModal(email)} />
       </main>
       <Footer />
 
-      {discountModal && (
+      {modalOpen && (
         <CheckoutModal
-          onClose={() => setDiscountModal(false)}
-          discount
+          onClose={() => setModalOpen(false)}
+          discount={modalDiscount}
+          initialEmail={prefillEmail}
         />
       )}
     </>
+  );
+}
+
+function FinalCTA({ onApply }: { onApply: (email: string) => void }) {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onApply(email);
+  };
+
+  return (
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-gray-900 text-white text-center">
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
+          Get Recommended by AI.
+          <br />
+          <span className="text-emerald-400">$350/mo. Guaranteed.</span>
+        </h2>
+        <p className="mt-4 text-gray-400">
+          One organic press article per month in a DR50+ publication.
+          100% money-back guarantee if we don&apos;t deliver.
+        </p>
+        <form onSubmit={handleSubmit} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@company.com"
+            className="w-full sm:flex-1 border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-full px-5 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-transparent"
+          />
+          <button
+            type="submit"
+            className="w-full sm:w-auto bg-white text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-gray-100 transition shrink-0"
+          >
+            Apply Now
+          </button>
+        </form>
+        <div className="mt-8">
+          <AISearchLogos size="sm" />
+        </div>
+      </div>
+    </section>
   );
 }
