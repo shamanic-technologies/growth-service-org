@@ -26,7 +26,7 @@ export function Footer() {
             <a href="/terms" className="block hover:text-gray-700">Terms &amp; Guarantee</a>
           </div>
           <div className="space-y-2">
-            <div className="font-medium text-gray-900">Our Network</div>
+            <div className="font-medium text-gray-900">We recommend ❤️</div>
             <a href="https://pressbeat.io" target="_blank" rel="noopener noreferrer" className="block hover:text-gray-700">
               PressBeat.io <span className="text-gray-400">— Organic Press on Demand</span>
             </a>
