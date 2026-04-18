@@ -1,7 +1,18 @@
-const EMAIL_SENDING_URL =
-  process.env.EMAIL_SENDING_SERVICE_URL || "https://email-sending.mcpfactory.org";
-const EMAIL_SENDING_API_KEY = process.env.EMAIL_SENDING_SERVICE_API_KEY || "";
+import { ServerClient } from "postmark";
+
+let _client: ServerClient | null = null;
+
+function getPostmark(): ServerClient {
+  if (!_client) {
+    _client = new ServerClient(process.env.POSTMARK_API_KEY!);
+  }
+  return _client;
+}
+
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "kevin@growthservice.org";
+const TRANSACTIONAL_STREAM =
+  process.env.POSTMARK_TRANSACTIONAL_STREAM_ID || "outbound";
+const FROM_ADDRESS = ADMIN_EMAIL;
 
 export async function sendTransactionalEmail({
   to,
@@ -18,36 +29,18 @@ export async function sendTransactionalEmail({
   tag?: string;
   bcc?: string;
 }) {
-  const res = await fetch(`${EMAIL_SENDING_URL}/send`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": EMAIL_SENDING_API_KEY,
-    },
-    body: JSON.stringify({
-      type: "transactional",
-      appId: "growthservice",
-      brandId: "growthservice",
-      campaignId: "transactional",
-      runId: `tx_${Date.now()}`,
-      to,
-      bcc: bcc || "",
-      recipientFirstName: "",
-      recipientLastName: "",
-      recipientCompany: "",
-      subject,
-      htmlBody,
-      textBody: textBody || "",
-      tag: tag || "growthservice-transactional",
-    }),
+  const client = getPostmark();
+
+  return client.sendEmail({
+    From: FROM_ADDRESS,
+    To: to,
+    ...(bcc && { Bcc: bcc }),
+    Subject: subject,
+    HtmlBody: htmlBody,
+    ...(textBody && { TextBody: textBody }),
+    ...(tag && { Tag: tag }),
+    MessageStream: TRANSACTIONAL_STREAM,
   });
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Email send failed: ${err}`);
-  }
-
-  return res.json();
 }
 
 export async function sendWelcomeEmail(email: string) {
