@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import posthog from "posthog-js";
 
 const STORAGE_KEY_FIRST_SEEN = "gs_banner_first_seen";
 const STORAGE_KEY_DISMISSED = "gs_banner_dismissed_at";
@@ -60,6 +61,7 @@ export function UrgencyBanner({
     const show = shouldShowBanner();
     setVisible(show);
     onVisibilityChange?.(show);
+    if (show) posthog.capture("urgency_banner_shown");
 
     if (!show) return;
 
@@ -80,6 +82,7 @@ export function UrgencyBanner({
   }, [onVisibilityChange]);
 
   const handleDismiss = () => {
+    posthog.capture("urgency_banner_dismissed");
     localStorage.setItem(STORAGE_KEY_DISMISSED, String(Date.now()));
     setVisible(false);
     onVisibilityChange?.(false);
@@ -92,11 +95,11 @@ export function UrgencyBanner({
       <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 text-sm flex-1 min-w-0">
           <span className="shrink-0 font-bold text-xs bg-white/20 px-2 py-0.5 rounded-full">
-            50% OFF
+            $100 OFF
           </span>
           <span className="truncate">
             <span className="font-semibold">Limited offer</span>
-            {" "}&mdash; First month at $175 (50% off)
+            {" "}&mdash; First month at $250 (save $100)
           </span>
           <span className="shrink-0 font-mono text-xs bg-black/20 px-2 py-1 rounded-md tabular-nums">
             {timeLeft}

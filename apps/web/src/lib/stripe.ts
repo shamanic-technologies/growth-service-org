@@ -22,27 +22,28 @@ const FREQUENCY_TO_RECURRING: Record<
   quarterly: { interval: "month", interval_count: 3 },
 };
 
-const LAUNCH50_COUPON_ID = "LAUNCH50";
+const LAUNCH100_COUPON_ID = "LAUNCH100";
 
 /**
- * Get or create the LAUNCH50 coupon (50% off first month).
+ * Get or create the LAUNCH100 coupon ($100 off first month).
  * Idempotent — safe to call on every request.
  */
 async function ensureLaunchCoupon(): Promise<string> {
   const stripe = getStripe();
 
   try {
-    await stripe.coupons.retrieve(LAUNCH50_COUPON_ID);
-    return LAUNCH50_COUPON_ID;
+    await stripe.coupons.retrieve(LAUNCH100_COUPON_ID);
+    return LAUNCH100_COUPON_ID;
   } catch {
     // Coupon doesn't exist yet — create it
     await stripe.coupons.create({
-      id: LAUNCH50_COUPON_ID,
-      percent_off: 50,
+      id: LAUNCH100_COUPON_ID,
+      amount_off: 10000,
+      currency: "usd",
       duration: "once",
-      name: "Launch offer — 50% off first month",
+      name: "Launch offer — $100 off first month",
     });
-    return LAUNCH50_COUPON_ID;
+    return LAUNCH100_COUPON_ID;
   }
 }
 
@@ -58,6 +59,7 @@ export async function createCheckoutSession(params: {
   brandUrl?: string;
   description?: string;
   discount?: boolean;
+  includeTracking?: boolean;
 }): Promise<string> {
   const stripe = getStripe();
   const isRecurring = params.frequency !== "one_off";
@@ -67,7 +69,7 @@ export async function createCheckoutSession(params: {
       ? ""
       : ` (${params.frequency})`;
 
-  const priceData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData = {
+  const mainPriceData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData = {
     currency: "usd",
     product_data: {
       name: `${params.serviceName} x${params.quantity}${frequencyLabel}`,
@@ -77,6 +79,25 @@ export async function createCheckoutSession(params: {
       recurring: FREQUENCY_TO_RECURRING[params.frequency as Exclude<Frequency, "one_off">],
     }),
   };
+
+  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+    { price_data: mainPriceData, quantity: 1 },
+  ];
+
+  // Add AI Visibility Score Tracking line item if requested
+  if (params.includeTracking && isRecurring) {
+    lineItems.push({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: "AI Visibility Score Tracking (weekly)",
+        },
+        unit_amount: 7900,
+        recurring: FREQUENCY_TO_RECURRING[params.frequency as Exclude<Frequency, "one_off">],
+      },
+      quantity: 1,
+    });
+  }
 
   const metadata: Record<string, string> = {
     order_id: params.orderId,
@@ -96,7 +117,10 @@ export async function createCheckoutSession(params: {
     metadata.description = params.description.slice(0, 500);
   }
   if (params.discount) {
-    metadata.discount = "LAUNCH50";
+    metadata.discount = "LAUNCH100";
+  }
+  if (params.includeTracking) {
+    metadata.include_tracking = "true";
   }
 
   // If discount requested, ensure the coupon exists
@@ -109,7 +133,7 @@ export async function createCheckoutSession(params: {
   const session = await stripe.checkout.sessions.create({
     mode: isRecurring ? "subscription" : "payment",
     customer_email: params.customerEmail,
-    line_items: [{ price_data: priceData, quantity: 1 }],
+    line_items: lineItems,
     metadata,
     ...(discounts && { discounts }),
     ...(isRecurring && {

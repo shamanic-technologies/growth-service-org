@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import posthog from "posthog-js";
 import { getEndOfUTCDay, formatCountdown } from "./urgency-banner";
 
 type Step = "info" | "checkout";
@@ -20,15 +21,17 @@ export function CheckoutModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState("");
+  const [includeTracking, setIncludeTracking] = useState(true);
 
   useEffect(() => {
+    posthog.capture("modal_opened", { discount: !!discount });
     if (!initialEmail) {
       const saved = localStorage.getItem("gs_email");
       if (saved) setEmail(saved);
     }
     const savedUrl = localStorage.getItem("gs_brand_url");
     if (savedUrl) setBrandUrl(savedUrl);
-  }, [initialEmail]);
+  }, [initialEmail, discount]);
 
   // Countdown timer for discount modal
   useEffect(() => {
@@ -65,6 +68,8 @@ export function CheckoutModal({
       // Non-blocking
     }
 
+    posthog.capture("lead_submitted", { email, brand_url: brandUrl, discount: !!discount });
+    posthog.identify(email, { email, brand_url: brandUrl });
     setLoading(false);
     setStep("checkout");
   };
@@ -77,7 +82,12 @@ export function CheckoutModal({
       const res = await fetch("/api/v1/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, brand_url: brandUrl, discount: !!discount }),
+        body: JSON.stringify({
+          email,
+          brand_url: brandUrl,
+          discount: !!discount,
+          include_tracking: includeTracking,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -85,12 +95,24 @@ export function CheckoutModal({
         setLoading(false);
         return;
       }
+      posthog.capture("checkout_started", {
+        email,
+        brand_url: brandUrl,
+        discount: !!discount,
+        include_tracking: includeTracking,
+        total_cents: todayTotal * 100,
+      });
       window.location.href = data.checkout_url;
     } catch {
       setError("Network error. Please try again.");
       setLoading(false);
     }
   };
+
+  const basePrice = discount ? 250 : 350;
+  const trackingPrice = 79;
+  const todayTotal = basePrice + (includeTracking ? trackingPrice : 0);
+  const monthlyTotal = 350 + (includeTracking ? trackingPrice : 0);
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center">
@@ -107,7 +129,7 @@ export function CheckoutModal({
               {discount ? (
                 <>
                   <span className="line-through text-gray-400 mr-1">$350</span>
-                  $175/first month &middot; then $350/mo
+                  $250/first month &middot; then $350/mo
                 </>
               ) : (
                 <>$350/month &middot; Cancel anytime</>
@@ -136,8 +158,8 @@ export function CheckoutModal({
             <div className="mb-4 p-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 text-amber-800 text-sm rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">50% OFF</span>
-                  <span>First month at $175</span>
+                  <span className="font-bold text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">$100 OFF</span>
+                  <span>First month at $250</span>
                 </div>
                 <span className="font-mono text-xs bg-amber-200/50 px-2 py-1 rounded-md tabular-nums">
                   {timeLeft}
@@ -221,26 +243,55 @@ export function CheckoutModal({
                 {discount && (
                   <div className="flex items-center justify-between text-sm mt-2">
                     <span className="text-gray-500">Coupon</span>
-                    <span className="font-medium text-amber-600">LAUNCH50 (50% off first month)</span>
+                    <span className="font-medium text-amber-600">LAUNCH100 ($100 off first month)</span>
                   </div>
                 )}
+
+                {/* AI Visibility Score Tracking add-on */}
+                <div className="border-t border-gray-200 mt-3 pt-3">
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={includeTracking}
+                      onChange={(e) => {
+                        setIncludeTracking(e.target.checked);
+                        posthog.capture("tracking_addon_toggled", { checked: e.target.checked });
+                      }}
+                      className="mt-0.5 w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium group-hover:text-gray-900">
+                          AI Visibility Score Tracking (weekly)
+                        </span>
+                        <span className="text-sm font-medium">$79/mo</span>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        Weekly report tracking your brand&apos;s visibility across ChatGPT, Perplexity &amp; Google AI
+                      </p>
+                    </div>
+                  </label>
+                </div>
+
                 <div className="border-t border-gray-200 mt-3 pt-3 flex items-center justify-between">
                   <span className="font-medium">Today</span>
                   <span className="text-xl font-bold">
                     {discount ? (
                       <>
-                        <span className="line-through text-gray-400 text-sm mr-1">$350</span>
-                        $175
+                        <span className="line-through text-gray-400 text-sm mr-1">
+                          ${350 + (includeTracking ? trackingPrice : 0)}
+                        </span>
+                        ${todayTotal}
                       </>
                     ) : (
-                      "$350"
+                      `$${todayTotal}`
                     )}
                     <span className="text-sm text-gray-400 font-normal">/mo</span>
                   </span>
                 </div>
                 {discount && (
                   <div className="text-xs text-gray-400 mt-1 text-right">
-                    Then $350/mo starting next month
+                    Then ${monthlyTotal}/mo starting next month
                   </div>
                 )}
               </div>
@@ -265,9 +316,7 @@ export function CheckoutModal({
               >
                 {loading
                   ? "Redirecting to payment..."
-                  : discount
-                    ? "Subscribe — $175 first month"
-                    : "Subscribe — $350/mo"}
+                  : `Subscribe — $${todayTotal}/mo`}
               </button>
 
               <p className="mt-3 text-xs text-gray-400 text-center">
