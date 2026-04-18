@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import posthog from "posthog-js";
 
 const STORAGE_KEY_FIRST_SEEN = "gs_banner_first_seen";
 const STORAGE_KEY_DISMISSED = "gs_banner_dismissed_at";
@@ -60,6 +61,7 @@ export function UrgencyBanner({
     const show = shouldShowBanner();
     setVisible(show);
     onVisibilityChange?.(show);
+    if (show) posthog.capture("urgency_banner_shown");
 
     if (!show) return;
 
@@ -80,6 +82,7 @@ export function UrgencyBanner({
   }, [onVisibilityChange]);
 
   const handleDismiss = () => {
+    posthog.capture("urgency_banner_dismissed");
     localStorage.setItem(STORAGE_KEY_DISMISSED, String(Date.now()));
     setVisible(false);
     onVisibilityChange?.(false);
