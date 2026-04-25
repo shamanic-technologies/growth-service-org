@@ -124,12 +124,26 @@ export function UrgencyBanner({
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 to-orange-500 text-white">
-      <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
-        <div className="flex items-center text-sm flex-1 min-w-0">
+      <div className="max-w-6xl mx-auto px-4 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+        <div className="flex items-center justify-between gap-2 text-sm min-w-0">
           <span className="truncate">
             <span className="font-semibold">Limited offer</span>
-            {" "}&mdash; 🎉 First month at <s>$350</s> $250 until {deadlineLabel}
+            <span className="hidden sm:inline">
+              {" "}&mdash; 🎉 First month at <s>$350</s> $250 until {deadlineLabel}
+            </span>
+            <span className="sm:hidden">
+              {" "}&mdash; $250/mo until {deadlineLabel}
+            </span>
           </span>
+          <button
+            onClick={handleDismiss}
+            className="p-1 hover:bg-white/20 rounded-lg transition sm:hidden shrink-0"
+            aria-label="Dismiss"
+          >
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 5l10 10M15 5L5 15" />
+            </svg>
+          </button>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <span className="font-mono text-xs bg-black/20 px-2 py-1 rounded-md tabular-nums">
@@ -137,13 +151,13 @@ export function UrgencyBanner({
           </span>
           <button
             onClick={onClaim}
-            className="bg-white text-orange-600 font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-orange-50 transition"
+            className="bg-white text-orange-600 font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-orange-50 transition flex-1 sm:flex-none"
           >
             Claim Offer
           </button>
           <button
             onClick={handleDismiss}
-            className="p-1 hover:bg-white/20 rounded-lg transition"
+            className="p-1 hover:bg-white/20 rounded-lg transition hidden sm:block"
             aria-label="Dismiss"
           >
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
