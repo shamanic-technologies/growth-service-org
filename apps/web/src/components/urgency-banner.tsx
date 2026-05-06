@@ -125,15 +125,10 @@ export function UrgencyBanner({
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 to-orange-500 text-white">
       <div className="max-w-6xl mx-auto px-4 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
-        <div className="flex items-center justify-between gap-2 text-sm min-w-0">
-          <span className="truncate">
+        <div className="flex items-start justify-between gap-2 text-sm min-w-0 sm:items-center">
+          <span className="break-words">
             <span className="font-semibold">Limited offer</span>
-            <span className="hidden sm:inline">
-              {" "}&mdash; 🎉 First month at <s>$350</s> $250 until {deadlineLabel}
-            </span>
-            <span className="sm:hidden">
-              {" "}&mdash; $250/mo until {deadlineLabel}
-            </span>
+            {" "}&mdash; 🎉 First month at <s>$350</s> $250 until {deadlineLabel}
           </span>
           <button
             onClick={handleDismiss}
