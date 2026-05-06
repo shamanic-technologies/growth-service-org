@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import posthog from "posthog-js";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
@@ -65,7 +65,6 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalDiscount, setModalDiscount] = useState(false);
   const [prefillEmail, setPrefillEmail] = useState("");
-  const [bannerVisible, setBannerVisible] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -79,10 +78,6 @@ export default function Home() {
     if (params.get("canceled") === "true") {
       posthog.capture("checkout_canceled");
     }
-  }, []);
-
-  const handleBannerVisibility = useCallback((visible: boolean) => {
-    setBannerVisible(visible);
   }, []);
 
   const openModal = (email: string, discount = false, source = "unknown") => {
@@ -100,10 +95,9 @@ export default function Home() {
       />
       <UrgencyBanner
         onClaim={() => openModal("", true, "urgency_banner")}
-        onVisibilityChange={handleBannerVisibility}
       />
-      <Navbar bannerVisible={bannerVisible} onApply={(email) => openModal(email, false, "navbar")} />
-      <main>
+      <Navbar onApply={(email) => openModal(email, false, "navbar")} />
+      <main style={{ paddingTop: "var(--banner-height, 0px)" }}>
         <Hero onApply={(email) => openModal(email, false, "hero")} />
 
         {/* Stats bar */}
