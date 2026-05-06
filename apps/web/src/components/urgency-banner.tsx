@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import posthog from "posthog-js";
 
 const STORAGE_KEY_FIRST_SEEN = "gs_banner_first_seen";
@@ -79,19 +79,17 @@ function shouldShowBanner(): boolean {
 
 export function UrgencyBanner({
   onClaim,
-  onVisibilityChange,
 }: {
   onClaim: () => void;
-  onVisibilityChange?: (visible: boolean) => void;
 }) {
   const [visible, setVisible] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
   const [deadlineLabel, setDeadlineLabel] = useState("");
+  const bannerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const show = shouldShowBanner();
     setVisible(show);
-    onVisibilityChange?.(show);
     if (show) posthog.capture("urgency_banner_shown");
 
     if (!show) return;
@@ -111,19 +109,45 @@ export function UrgencyBanner({
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, [onVisibilityChange]);
+  }, []);
+
+  useEffect(() => {
+    if (!visible) {
+      document.documentElement.style.setProperty("--banner-height", "0px");
+      return;
+    }
+    const el = bannerRef.current;
+    if (!el) return;
+
+    const setHeight = () => {
+      document.documentElement.style.setProperty(
+        "--banner-height",
+        `${el.offsetHeight}px`
+      );
+    };
+
+    setHeight();
+    const observer = new ResizeObserver(setHeight);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.setProperty("--banner-height", "0px");
+    };
+  }, [visible]);
 
   const handleDismiss = () => {
     posthog.capture("urgency_banner_dismissed");
     localStorage.setItem(STORAGE_KEY_DISMISSED, String(Date.now()));
     setVisible(false);
-    onVisibilityChange?.(false);
   };
 
   if (!visible) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+    <div
+      ref={bannerRef}
+      className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 to-orange-500 text-white"
+    >
       <div className="max-w-6xl mx-auto px-4 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
         <div className="flex items-start justify-between gap-2 text-sm min-w-0 sm:items-center">
           <span className="break-words">

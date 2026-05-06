@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 
-export function Navbar({ bannerVisible, onApply }: { bannerVisible?: boolean; onApply?: (email: string) => void }) {
+export function Navbar({ onApply }: { onApply?: (email: string) => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav
-      className={`fixed left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 transition-[top] duration-200 ${
-        bannerVisible ? "top-[38px]" : "top-0"
-      }`}
+      className="fixed left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 transition-[top] duration-200"
+      style={{ top: "var(--banner-height, 0px)" }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
