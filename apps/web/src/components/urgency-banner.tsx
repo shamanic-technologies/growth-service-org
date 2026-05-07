@@ -56,25 +56,13 @@ function getDeadlineLabel(deadline: number): string {
   return `${dayLabel} ${timeStr}`;
 }
 
-function shouldShowBanner(): boolean {
+export function wasRecentlyDismissed(): boolean {
   if (typeof window === "undefined") return false;
-
-  const firstSeen = localStorage.getItem(STORAGE_KEY_FIRST_SEEN);
   const dismissedAt = localStorage.getItem(STORAGE_KEY_DISMISSED);
-
-  if (!firstSeen) {
-    localStorage.setItem(STORAGE_KEY_FIRST_SEEN, String(Date.now()));
-    return true;
-  }
-
-  if (dismissedAt) {
-    const elapsed = Date.now() - Number(dismissedAt);
-    const reappearMs = REAPPEAR_DAYS * 24 * 60 * 60 * 1000;
-    if (elapsed < reappearMs) return false;
-    return true;
-  }
-
-  return true;
+  if (!dismissedAt) return false;
+  const elapsed = Date.now() - Number(dismissedAt);
+  const reappearMs = REAPPEAR_DAYS * 24 * 60 * 60 * 1000;
+  return elapsed < reappearMs;
 }
 
 export function UrgencyBanner({
@@ -82,17 +70,21 @@ export function UrgencyBanner({
 }: {
   onClaim: () => void;
 }) {
-  const [visible, setVisible] = useState(false);
-  const [timeLeft, setTimeLeft] = useState("");
+  const [visible, setVisible] = useState(true);
+  const [timeLeft, setTimeLeft] = useState("--:--:--");
   const [deadlineLabel, setDeadlineLabel] = useState("");
   const bannerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const show = shouldShowBanner();
-    setVisible(show);
-    if (show) posthog.capture("urgency_banner_shown");
+    if (wasRecentlyDismissed()) {
+      setVisible(false);
+      return;
+    }
 
-    if (!show) return;
+    if (!localStorage.getItem(STORAGE_KEY_FIRST_SEEN)) {
+      localStorage.setItem(STORAGE_KEY_FIRST_SEEN, String(Date.now()));
+    }
+    posthog.capture("urgency_banner_shown");
 
     const deadline = getNextDeadline();
     setDeadlineLabel(getDeadlineLabel(deadline));
